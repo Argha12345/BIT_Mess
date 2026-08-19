@@ -1,0 +1,506 @@
+[
+  {
+    "id": "m-boys-1",
+    "section": "Boys",
+    "day": "Monday",
+    "meal": "Breakfast",
+    "items": "Idly, Sambar, Coconut Chutney, Vadai, Tea/Coffee",
+    "popularity": 8,
+    "veg": true
+  },
+  {
+    "id": "m-boys-2",
+    "section": "Boys",
+    "day": "Monday",
+    "meal": "Lunch",
+    "items": "White Rice, Bhavani Sambar, Rasam, Beetroot Poriyal, Curd, Appalam",
+    "popularity": 6,
+    "veg": true
+  },
+  {
+    "id": "m-boys-3",
+    "section": "Boys",
+    "day": "Monday",
+    "meal": "Snacks",
+    "items": "Onion Pakoda, Hot Tea/Milk",
+    "popularity": 7,
+    "veg": true
+  },
+  {
+    "id": "m-boys-4",
+    "section": "Boys",
+    "day": "Monday",
+    "meal": "Dinner",
+    "items": "Chappathi, Veg Kurma, Veg Fried Rice, Gravy, Milk",
+    "popularity": 8,
+    "veg": true
+  },
+  {
+    "id": "m-boys-5",
+    "section": "Boys",
+    "day": "Tuesday",
+    "meal": "Breakfast",
+    "items": "Pongal, Sambar, Coconut Chutney, Medu Vadai, Coffee/Tea",
+    "popularity": 9,
+    "veg": true
+  },
+  {
+    "id": "m-boys-6",
+    "section": "Boys",
+    "day": "Tuesday",
+    "meal": "Lunch",
+    "items": "Veg Biryani, Onion Raitha, Potato Chips, Rasam, Curd",
+    "popularity": 8,
+    "veg": true
+  },
+  {
+    "id": "m-boys-7",
+    "section": "Boys",
+    "day": "Tuesday",
+    "meal": "Snacks",
+    "items": "Kozhukattai, Tea/Milk",
+    "popularity": 5,
+    "veg": true
+  },
+  {
+    "id": "m-boys-8",
+    "section": "Boys",
+    "day": "Tuesday",
+    "meal": "Dinner",
+    "items": "Parotta, Paneer Butter Masala, White Rice, Rasam, Milk",
+    "popularity": 9,
+    "veg": true
+  },
+  {
+    "id": "m-boys-9",
+    "section": "Boys",
+    "day": "Wednesday",
+    "meal": "Breakfast",
+    "items": "Poori, Potato Masala, Coconut Chutney, Tea/Coffee",
+    "popularity": 8,
+    "veg": true
+  },
+  {
+    "id": "m-boys-10",
+    "section": "Boys",
+    "day": "Wednesday",
+    "meal": "Lunch",
+    "items": "White Rice, Kara Kuzhambu, Cabbage Poriyal, Rasam, Butter Milk",
+    "popularity": 6,
+    "veg": true
+  },
+  {
+    "id": "m-boys-11",
+    "section": "Boys",
+    "day": "Wednesday",
+    "meal": "Snacks",
+    "items": "Samosa, Hot Tea/Milk",
+    "popularity": 9,
+    "veg": true
+  },
+  {
+    "id": "m-boys-12",
+    "section": "Boys",
+    "day": "Wednesday",
+    "meal": "Dinner",
+    "items": "Dosa, Tomato Chutney, Sambar, Lemon Rice, Milk",
+    "popularity": 8,
+    "veg": true
+  },
+  {
+    "id": "m-boys-13",
+    "section": "Boys",
+    "day": "Thursday",
+    "meal": "Breakfast",
+    "items": "Rava Upma, Coconut Chutney, Sugar, Banana, Coffee/Tea",
+    "popularity": 4,
+    "veg": true
+  },
+  {
+    "id": "m-boys-14",
+    "section": "Boys",
+    "day": "Thursday",
+    "meal": "Lunch",
+    "items": "White Rice, Drumstick Sambar, Keerai Kootu, Potato Fry, Rasam, Curd",
+    "popularity": 7,
+    "veg": true
+  },
+  {
+    "id": "m-boys-15",
+    "section": "Boys",
+    "day": "Thursday",
+    "meal": "Snacks",
+    "items": "Sundal, Hot Tea/Milk",
+    "popularity": 6,
+    "veg": true
+  },
+  {
+    "id": "m-boys-16",
+    "section": "Boys",
+    "day": "Thursday",
+    "meal": "Dinner",
+    "items": "Idiyappam, Coconut Milk, Veg Kurma, White Rice, Rasam, Milk",
+    "popularity": 7,
+    "veg": true
+  },
+  {
+    "id": "m-boys-17",
+    "section": "Boys",
+    "day": "Friday",
+    "meal": "Breakfast",
+    "items": "Semiya Upma, Coconut Chutney, Banana, Tea/Coffee",
+    "popularity": 5,
+    "veg": true
+  },
+  {
+    "id": "m-boys-18",
+    "section": "Boys",
+    "day": "Friday",
+    "meal": "Lunch",
+    "items": "White Rice, Vatha Kuzhambu, Appalam, Carrot Poriyal, Rasam, Curd",
+    "popularity": 6,
+    "veg": true
+  },
+  {
+    "id": "m-boys-19",
+    "section": "Boys",
+    "day": "Friday",
+    "meal": "Snacks",
+    "items": "Bajjis (Banana/Potato), Hot Tea/Milk",
+    "popularity": 9,
+    "veg": true
+  },
+  {
+    "id": "m-boys-20",
+    "section": "Boys",
+    "day": "Friday",
+    "meal": "Dinner",
+    "items": "Naan, Gobi Manchurian, Veg Pulao, Dal Fry, Milk",
+    "popularity": 9,
+    "veg": true
+  },
+  {
+    "id": "m-boys-21",
+    "section": "Boys",
+    "day": "Saturday",
+    "meal": "Breakfast",
+    "items": "Dosa, Sambar, Mint Chutney, Tea/Coffee",
+    "popularity": 8,
+    "veg": true
+  },
+  {
+    "id": "m-boys-22",
+    "section": "Boys",
+    "day": "Saturday",
+    "meal": "Lunch",
+    "items": "Lemon Rice, Curd Rice, Potato Chips, Pickles, Appalam",
+    "popularity": 5,
+    "veg": true
+  },
+  {
+    "id": "m-boys-23",
+    "section": "Boys",
+    "day": "Saturday",
+    "meal": "Snacks",
+    "items": "Biscuits, Rusk, Hot Tea/Milk",
+    "popularity": 5,
+    "veg": true
+  },
+  {
+    "id": "m-boys-24",
+    "section": "Boys",
+    "day": "Saturday",
+    "meal": "Dinner",
+    "items": "Chappathi, Dal Tadka, White Rice, Sambar, Curd, Milk",
+    "popularity": 7,
+    "veg": true
+  },
+  {
+    "id": "m-boys-25",
+    "section": "Boys",
+    "day": "Sunday",
+    "meal": "Breakfast",
+    "items": "Idly, Sambar, Coconut Chutney, Vadai, Halwa, Coffee/Tea",
+    "popularity": 9,
+    "veg": true
+  },
+  {
+    "id": "m-boys-26",
+    "section": "Boys",
+    "day": "Sunday",
+    "meal": "Lunch",
+    "items": "BIT Spl Chicken Biryani (Non-Veg) OR Paneer Biryani (Veg), Raitha, Brinjal Gravy, Ice Cream",
+    "popularity": 10,
+    "veg": false
+  },
+  {
+    "id": "m-boys-27",
+    "section": "Boys",
+    "day": "Sunday",
+    "meal": "Snacks",
+    "items": "Puffs (Egg/Veg), Hot Tea/Milk",
+    "popularity": 8,
+    "veg": false
+  },
+  {
+    "id": "m-boys-28",
+    "section": "Boys",
+    "day": "Sunday",
+    "meal": "Dinner",
+    "items": "Uthappam, Sambar, Chutney, Fried Rice, Tomato Sauce, Milk",
+    "popularity": 8,
+    "veg": true
+  },
+  {
+    "id": "m-girls-1",
+    "section": "Girls",
+    "day": "Monday",
+    "meal": "Breakfast",
+    "items": "Idly, Sambar, Tomato Chutney, Vadai, Tea/Milk",
+    "popularity": 8,
+    "veg": true
+  },
+  {
+    "id": "m-girls-2",
+    "section": "Girls",
+    "day": "Monday",
+    "meal": "Lunch",
+    "items": "White Rice, Kaveri Sambar, Rasam, Cabbage Poriyal, Curd, Appalam",
+    "popularity": 6,
+    "veg": true
+  },
+  {
+    "id": "m-girls-3",
+    "section": "Girls",
+    "day": "Monday",
+    "meal": "Snacks",
+    "items": "Sweet Kozhukattai, Hot Tea/Milk",
+    "popularity": 7,
+    "veg": true
+  },
+  {
+    "id": "m-girls-4",
+    "section": "Girls",
+    "day": "Monday",
+    "meal": "Dinner",
+    "items": "Chappathi, Veg Kurma, Jeera Rice, Milk",
+    "popularity": 8,
+    "veg": true
+  },
+  {
+    "id": "m-girls-5",
+    "section": "Girls",
+    "day": "Tuesday",
+    "meal": "Breakfast",
+    "items": "Pongal, Sambar, Coconut Chutney, Medu Vadai, Coffee/Tea",
+    "popularity": 9,
+    "veg": true
+  },
+  {
+    "id": "m-girls-6",
+    "section": "Girls",
+    "day": "Tuesday",
+    "meal": "Lunch",
+    "items": "Mushroom Biryani, Onion Raitha, Potato Chips, Rasam, Curd",
+    "popularity": 8,
+    "veg": true
+  },
+  {
+    "id": "m-girls-7",
+    "section": "Girls",
+    "day": "Tuesday",
+    "meal": "Snacks",
+    "items": "Methu Vadai, Tea/Milk",
+    "popularity": 5,
+    "veg": true
+  },
+  {
+    "id": "m-girls-8",
+    "section": "Girls",
+    "day": "Tuesday",
+    "meal": "Dinner",
+    "items": "Parotta, Paneer Butter Masala, White Rice, Rasam, Milk",
+    "popularity": 9,
+    "veg": true
+  },
+  {
+    "id": "m-girls-9",
+    "section": "Girls",
+    "day": "Wednesday",
+    "meal": "Breakfast",
+    "items": "Poori, Potato Masala, Coconut Chutney, Tea/Coffee",
+    "popularity": 8,
+    "veg": true
+  },
+  {
+    "id": "m-girls-10",
+    "section": "Girls",
+    "day": "Wednesday",
+    "meal": "Lunch",
+    "items": "White Rice, Poondu Kuzhambu, Beetroot Poriyal, Rasam, Butter Milk",
+    "popularity": 6,
+    "veg": true
+  },
+  {
+    "id": "m-girls-11",
+    "section": "Girls",
+    "day": "Wednesday",
+    "meal": "Snacks",
+    "items": "Samosa, Hot Tea/Milk",
+    "popularity": 9,
+    "veg": true
+  },
+  {
+    "id": "m-girls-12",
+    "section": "Girls",
+    "day": "Wednesday",
+    "meal": "Dinner",
+    "items": "Dosa, Tomato Chutney, Sambar, Lemon Rice, Milk",
+    "popularity": 8,
+    "veg": true
+  },
+  {
+    "id": "m-girls-13",
+    "section": "Girls",
+    "day": "Thursday",
+    "meal": "Breakfast",
+    "items": "Rava Upma, Coconut Chutney, Sugar, Banana, Coffee/Tea",
+    "popularity": 4,
+    "veg": true
+  },
+  {
+    "id": "m-girls-14",
+    "section": "Girls",
+    "day": "Thursday",
+    "meal": "Lunch",
+    "items": "White Rice, Drumstick Sambar, Keerai Kootu, Potato Fry, Rasam, Curd",
+    "popularity": 7,
+    "veg": true
+  },
+  {
+    "id": "m-girls-15",
+    "section": "Girls",
+    "day": "Thursday",
+    "meal": "Snacks",
+    "items": "Sundal, Hot Tea/Milk",
+    "popularity": 6,
+    "veg": true
+  },
+  {
+    "id": "m-girls-16",
+    "section": "Girls",
+    "day": "Thursday",
+    "meal": "Dinner",
+    "items": "Idiyappam, Coconut Milk, Veg Kurma, White Rice, Rasam, Milk",
+    "popularity": 7,
+    "veg": true
+  },
+  {
+    "id": "m-girls-17",
+    "section": "Girls",
+    "day": "Friday",
+    "meal": "Breakfast",
+    "items": "Semiya Upma, Coconut Chutney, Banana, Tea/Coffee",
+    "popularity": 5,
+    "veg": true
+  },
+  {
+    "id": "m-girls-18",
+    "section": "Girls",
+    "day": "Friday",
+    "meal": "Lunch",
+    "items": "White Rice, Vatha Kuzhambu, Appalam, Carrot Poriyal, Rasam, Curd",
+    "popularity": 6,
+    "veg": true
+  },
+  {
+    "id": "m-girls-19",
+    "section": "Girls",
+    "day": "Friday",
+    "meal": "Snacks",
+    "items": "Bajjis (Banana/Potato), Hot Tea/Milk",
+    "popularity": 9,
+    "veg": true
+  },
+  {
+    "id": "m-girls-20",
+    "section": "Girls",
+    "day": "Friday",
+    "meal": "Dinner",
+    "items": "Naan, Gobi Manchurian, Veg Pulao, Dal Fry, Milk",
+    "popularity": 9,
+    "veg": true
+  },
+  {
+    "id": "m-girls-21",
+    "section": "Girls",
+    "day": "Saturday",
+    "meal": "Breakfast",
+    "items": "Dosa, Sambar, Mint Chutney, Tea/Coffee",
+    "popularity": 8,
+    "veg": true
+  },
+  {
+    "id": "m-girls-22",
+    "section": "Girls",
+    "day": "Saturday",
+    "meal": "Lunch",
+    "items": "Lemon Rice, Curd Rice, Potato Chips, Pickles, Appalam",
+    "popularity": 5,
+    "veg": true
+  },
+  {
+    "id": "m-girls-23",
+    "section": "Girls",
+    "day": "Saturday",
+    "meal": "Snacks",
+    "items": "Biscuits, Rusk, Hot Tea/Milk",
+    "popularity": 5,
+    "veg": true
+  },
+  {
+    "id": "m-girls-24",
+    "section": "Girls",
+    "day": "Saturday",
+    "meal": "Dinner",
+    "items": "Chappathi, Dal Tadka, White Rice, Sambar, Curd, Milk",
+    "popularity": 7,
+    "veg": true
+  },
+  {
+    "id": "m-girls-25",
+    "section": "Girls",
+    "day": "Sunday",
+    "meal": "Breakfast",
+    "items": "Idly, Sambar, Coconut Chutney, Vadai, Halwa, Coffee/Tea",
+    "popularity": 9,
+    "veg": true
+  },
+  {
+    "id": "m-girls-26",
+    "section": "Girls",
+    "day": "Sunday",
+    "meal": "Lunch",
+    "items": "Paneer Biryani (Veg) OR Veg Biryani, Raitha, Brinjal Gravy, Ice Cream",
+    "popularity": 9,
+    "veg": true
+  },
+  {
+    "id": "m-girls-27",
+    "section": "Girls",
+    "day": "Sunday",
+    "meal": "Snacks",
+    "items": "Veg Puffs, Hot Tea/Milk",
+    "popularity": 8,
+    "veg": true
+  },
+  {
+    "id": "m-girls-28",
+    "section": "Girls",
+    "day": "Sunday",
+    "meal": "Dinner",
+    "items": "Uthappam, Sambar, Chutney, Fried Rice, Tomato Sauce, Milk",
+    "popularity": 8,
+    "veg": true
+  }
+]

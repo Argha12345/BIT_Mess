@@ -1,0 +1,134 @@
+[
+  {
+    "id": "w1",
+    "section": "Boys",
+    "date": "2026-07-25",
+    "meal": "Breakfast",
+    "menuItem": "Idly, Vadai, Sambar",
+    "cookedMeals": 600,
+    "actualDiners": 560,
+    "preConsumerWaste": 8,
+    "postConsumerWaste": 21
+  },
+  {
+    "id": "w2",
+    "section": "Boys",
+    "date": "2026-07-25",
+    "meal": "Lunch",
+    "menuItem": "White Rice, Sambar, Poriyal",
+    "cookedMeals": 650,
+    "actualDiners": 625,
+    "preConsumerWaste": 10,
+    "postConsumerWaste": 29
+  },
+  {
+    "id": "w3",
+    "section": "Boys",
+    "date": "2026-07-25",
+    "meal": "Dinner",
+    "menuItem": "Chappathi, Fried Rice",
+    "cookedMeals": 550,
+    "actualDiners": 520,
+    "preConsumerWaste": 6,
+    "postConsumerWaste": 19
+  },
+  {
+    "id": "w4",
+    "section": "Girls",
+    "date": "2026-07-25",
+    "meal": "Breakfast",
+    "menuItem": "Idly, Vadai, Sambar",
+    "cookedMeals": 600,
+    "actualDiners": 560,
+    "preConsumerWaste": 7,
+    "postConsumerWaste": 21
+  },
+  {
+    "id": "w5",
+    "section": "Girls",
+    "date": "2026-07-25",
+    "meal": "Lunch",
+    "menuItem": "White Rice, Sambar, Poriyal",
+    "cookedMeals": 650,
+    "actualDiners": 625,
+    "preConsumerWaste": 10,
+    "postConsumerWaste": 29
+  },
+  {
+    "id": "w6",
+    "section": "Girls",
+    "date": "2026-07-25",
+    "meal": "Dinner",
+    "menuItem": "Chappathi, Fried Rice",
+    "cookedMeals": 550,
+    "actualDiners": 520,
+    "preConsumerWaste": 6,
+    "postConsumerWaste": 19
+  },
+  {
+    "id": "w7",
+    "section": "Boys",
+    "date": "2026-07-26",
+    "meal": "Breakfast",
+    "menuItem": "Pongal, Sambar",
+    "cookedMeals": 600,
+    "actualDiners": 590,
+    "preConsumerWaste": 9,
+    "postConsumerWaste": 12
+  },
+  {
+    "id": "w8",
+    "section": "Boys",
+    "date": "2026-07-26",
+    "meal": "Lunch",
+    "menuItem": "Veg Biryani, Chips",
+    "cookedMeals": 700,
+    "actualDiners": 695,
+    "preConsumerWaste": 5,
+    "postConsumerWaste": 14
+  },
+  {
+    "id": "w9",
+    "section": "Boys",
+    "date": "2026-07-26",
+    "meal": "Dinner",
+    "menuItem": "Parotta, Paneer Curry",
+    "cookedMeals": 600,
+    "actualDiners": 597,
+    "preConsumerWaste": 4,
+    "postConsumerWaste": 16
+  },
+  {
+    "id": "w10",
+    "section": "Girls",
+    "date": "2026-07-26",
+    "meal": "Breakfast",
+    "menuItem": "Pongal, Sambar",
+    "cookedMeals": 600,
+    "actualDiners": 590,
+    "preConsumerWaste": 9,
+    "postConsumerWaste": 13
+  },
+  {
+    "id": "w11",
+    "section": "Girls",
+    "date": "2026-07-26",
+    "meal": "Lunch",
+    "menuItem": "Veg Biryani, Chips",
+    "cookedMeals": 700,
+    "actualDiners": 695,
+    "preConsumerWaste": 5,
+    "postConsumerWaste": 14
+  },
+  {
+    "id": "w12",
+    "section": "Girls",
+    "date": "2026-07-26",
+    "meal": "Dinner",
+    "menuItem": "Parotta, Paneer Curry",
+    "cookedMeals": 600,
+    "actualDiners": 597,
+    "preConsumerWaste": 4,
+    "postConsumerWaste": 16
+  }
+]

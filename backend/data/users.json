@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "rollNo": "admin1",
+    "password": "$2b$10$J2YdVi.oW6JUiAbSbq77OO/ETcSalnEFk3oC2Ijmk.LuLkNHIDqqS",
+    "name": "Mess Supervisor",
+    "role": "admin",
+    "hostel": "All",
+    "section": "All",
+    "messType": "All"
+  },
+  {
+    "id": "u1786092445329-560",
+    "rollNo": "arghachakrabortty.se23@bitsathy.ac.in",
+    "name": "Argha Chakrabortty",
+    "password": "$2b$10$WRKQ7R6aTbPsmDUOMeSwauEGtxgka5hu.XBXTo0h1yKVCPpzuHeY2",
+    "role": "student",
+    "hostel": "Emerald",
+    "section": "Boys",
+    "messType": "Non-Veg"
+  },
+  {
+    "id": "u1786094819373-210",
+    "rollNo": "student.test@bitsathy.ac.in",
+    "name": "BIT Student (Google)",
+    "password": "$2b$10$PpcPcrK7rWhhBRc0HUmiaOkkQGDkurMWvVbHWzGsHC/vIpRE9ji6u",
+    "role": "student",
+    "hostel": "Sapphire",
+    "section": "Boys",
+    "messType": "Standard"
+  },
+  {
+    "id": "u1786094846592-477",
+    "rollNo": "student@bitsathy.ac.in",
+    "name": "BIT Student (Google)",
+    "password": "$2b$10$v4kVFaDOCoyJP6EHfctMTOGVs.mPi5NlVFr8pJ28xEMUT46lYb0rK",
+    "role": "student",
+    "hostel": "Sapphire",
+    "section": "Boys",
+    "messType": "Standard"
+  }
+]

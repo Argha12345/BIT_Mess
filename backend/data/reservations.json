@@ -1,0 +1,15 @@
+[
+  {
+    "id": "r-seed-1",
+    "userId": "2",
+    "rollNo": "221CS101",
+    "name": "Aravind Kumar",
+    "section": "Boys",
+    "hostel": "Kaveri Hostel (Block A)",
+    "messType": "Veg",
+    "date": "2026-07-30",
+    "meal": "Dinner",
+    "status": "cancelled",
+    "createdAt": "2026-07-30T08:56:42.278Z"
+  }
+]
