@@ -1,23 +1,9 @@
 [
   {
-    "id": "n1",
-    "section": "Boys",
-    "studentRollNo": "221CS101",
-    "message": "Welcome to the Boys Mess Section! Slot booking is removed. You can now recommend dishes 1 week prior.",
-    "createdAt": "2026-07-29T09:39:51.938Z"
-  },
-  {
     "id": "n2",
     "section": "Girls",
     "studentRollNo": "221IT202",
     "message": "Welcome to the Girls Mess Section! Slot booking is removed. You can now recommend dishes 1 week prior.",
     "createdAt": "2026-07-29T09:39:51.951Z"
-  },
-  {
-    "id": "n1786092888970-151",
-    "createdAt": "2026-08-07T08:54:48.963Z",
-    "section": "Boys",
-    "studentRollNo": "All",
-    "message": "Test Admin Broadcast Alert: Dinner Special Desserts served today at Kaveri Hostel."
   }
 ]

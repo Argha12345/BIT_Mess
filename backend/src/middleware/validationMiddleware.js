@@ -1,3 +1,38 @@
+// Middleware to prevent sensitive data exposure in HTTP responses and enforce anti-caching headers
+export const secureResponseMiddleware = (req, res, next) => {
+  // Prevent browser & proxy caching of sensitive API responses in Network Inspector
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+
+  // Override res.json to strip sensitive fields recursively
+  const originalJson = res.json;
+  res.json = function (data) {
+    const stripSensitiveKeys = (obj) => {
+      if (!obj || typeof obj !== 'object') return obj;
+      if (Array.isArray(obj)) {
+        return obj.map(stripSensitiveKeys);
+      }
+      const cleaned = {};
+      for (const key in obj) {
+        if (['password', 'currentPassword', 'newPassword', 'hash', 'secret'].includes(key)) {
+          continue; // Strip out sensitive fields
+        }
+        cleaned[key] = typeof obj[key] === 'object' && obj[key] !== null 
+          ? stripSensitiveKeys(obj[key]) 
+          : obj[key];
+      }
+      return cleaned;
+    };
+
+    const sanitizedData = stripSensitiveKeys(data);
+    return originalJson.call(this, sanitizedData);
+  };
+
+  next();
+};
+
 // Input sanitization helper to prevent XSS script injection in text inputs
 export const sanitizeString = (str) => {
   if (typeof str !== 'string') return str;

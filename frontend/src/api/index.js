@@ -1,4 +1,5 @@
 import { fetchJson } from './client';
+import { secureStorage } from '@/utils/secureStorage';
 
 export const authApi = {
   login: async (rollNo, password) => {
@@ -7,7 +8,7 @@ export const authApi = {
       body: JSON.stringify({ rollNo, password })
     });
     if (data.token) {
-      localStorage.setItem('token', data.token);
+      secureStorage.setItem('token', data.token);
     }
     return data;
   },
@@ -17,7 +18,7 @@ export const authApi = {
       body: JSON.stringify({ idToken })
     });
     if (data.token) {
-      localStorage.setItem('token', data.token);
+      secureStorage.setItem('token', data.token);
     }
     return data;
   },
@@ -27,7 +28,7 @@ export const authApi = {
       body: JSON.stringify(studentData)
     });
     if (data.token) {
-      localStorage.setItem('token', data.token);
+      secureStorage.setItem('token', data.token);
     }
     return data;
   },
@@ -36,9 +37,9 @@ export const authApi = {
     body: JSON.stringify(payload)
   }),
   logout: () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('activePage');
+    secureStorage.removeItem('token');
+    secureStorage.removeItem('user');
+    secureStorage.removeItem('activePage');
   }
 };
 

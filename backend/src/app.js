@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { env } from './config/index.js';
 import apiRouter from './routes/index.js';
-import { sanitizeInputMiddleware, apiLimiter } from './middleware/index.js';
+import { sanitizeInputMiddleware, secureResponseMiddleware, apiLimiter } from './middleware/index.js';
 
 const app = express();
 
@@ -27,6 +27,7 @@ app.use(cors({
 // Body Parsing & Sanitization
 app.use(express.json({ limit: '10kb' })); // Limit body payload to prevent DoS
 app.use(sanitizeInputMiddleware);
+app.use(secureResponseMiddleware);
 
 // Mount API Router with global rate limiter
 app.use('/api', apiLimiter, apiRouter);

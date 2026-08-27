@@ -2,6 +2,7 @@ import React, { useState, lazy, Suspense } from 'react';
 import { Sidebar, Header, OfflineScreen } from '@/components/common';
 import { useNetworkStatus } from '@/hooks';
 import { api } from '@/api';
+import { secureStorage } from '@/utils/secureStorage';
 import DashboardSkeleton from '@/components/features/dashboard/DashboardSkeleton';
 
 // Code Splitting - Lazy-loaded Page Routes & Modals
@@ -21,15 +22,14 @@ const PageLoader = () => (
 export default function App() {
   const [user, setUser] = useState(() => {
     try {
-      const savedUser = localStorage.getItem('user');
-      return savedUser ? JSON.parse(savedUser) : null;
+      return secureStorage.getItem('user');
     } catch {
       return null;
     }
   });
 
   const [activePage, setActivePage] = useState(() => {
-    return localStorage.getItem('activePage') || 'dashboard';
+    return secureStorage.getItem('activePage') || 'dashboard';
   });
 
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -39,21 +39,21 @@ export default function App() {
   const updateUser = (userData) => {
     setUser(userData);
     if (userData) {
-      localStorage.setItem('user', JSON.stringify(userData));
+      secureStorage.setItem('user', userData);
     } else {
-      localStorage.removeItem('user');
+      secureStorage.removeItem('user');
     }
   };
 
   const changeActivePage = (page) => {
     setActivePage(page);
-    localStorage.setItem('activePage', page);
+    secureStorage.setItem('activePage', page);
   };
 
   const handleLogout = () => {
     api.auth.logout();
-    localStorage.removeItem('user');
-    localStorage.removeItem('activePage');
+    secureStorage.removeItem('user');
+    secureStorage.removeItem('activePage');
     setUser(null);
     changeActivePage('dashboard');
   };

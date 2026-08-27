@@ -6,10 +6,24 @@
     "name": "Aravind Kumar",
     "section": "Boys",
     "hostel": "Kaveri Hostel (Block A)",
-    "messType": "Veg",
+    "messType": "Standard (Veg+Egg)",
     "date": "2026-07-30",
     "meal": "Dinner",
     "status": "cancelled",
     "createdAt": "2026-07-30T08:56:42.278Z"
+  },
+  {
+    "id": "r1787819107933-733",
+    "userId": "u1786092445329-560",
+    "rollNo": "arghachakrabortty.se23@bitsathy.ac.in",
+    "name": "Argha Chakrabortty",
+    "section": "Boys",
+    "hostel": "Emerald",
+    "messType": "Standard (Veg+Egg)",
+    "date": "2026-08-27",
+    "meal": "Dinner",
+    "reason": "Exam Preparation",
+    "status": "pending",
+    "createdAt": "2026-08-27T08:25:07.929Z"
   }
 ]

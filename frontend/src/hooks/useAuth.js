@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { api } from '@/api';
-
+import { secureStorage } from '@/utils/secureStorage';
 
 export function useAuth({ setUser, setActivePage, onClose }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,8 +26,8 @@ export function useAuth({ setUser, setActivePage, onClose }) {
       const res = await api.auth.login(rollNo, password);
       setAuthSuccess('Welcome back! Logging you in...');
       const targetPage = res.user.role === 'admin' ? 'admin-panel' : 'student-portal';
-      localStorage.setItem('user', JSON.stringify(res.user));
-      localStorage.setItem('activePage', targetPage);
+      secureStorage.setItem('user', res.user);
+      secureStorage.setItem('activePage', targetPage);
       setTimeout(() => {
         if (setUser) setUser(res.user);
         if (setActivePage) setActivePage(targetPage);
@@ -47,8 +47,8 @@ export function useAuth({ setUser, setActivePage, onClose }) {
       const res = await api.auth.googleLogin(googleIdToken);
       setAuthSuccess(`Welcome, ${res.user.name}! Sign-In successful...`);
       const targetPage = res.user.role === 'admin' ? 'admin-panel' : 'student-portal';
-      localStorage.setItem('user', JSON.stringify(res.user));
-      localStorage.setItem('activePage', targetPage);
+      secureStorage.setItem('user', res.user);
+      secureStorage.setItem('activePage', targetPage);
       setTimeout(() => {
         if (setUser) setUser(res.user);
         if (setActivePage) setActivePage(targetPage);

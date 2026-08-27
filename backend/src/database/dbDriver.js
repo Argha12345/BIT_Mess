@@ -13,9 +13,9 @@ const DATA_DIR = path.join(__dirname, '..', '..', 'data');
 const SEED_DATA = {
   users: [
     { id: '1', rollNo: 'admin1', password: '$2a$10$wN1D4iVlMsk8nQcTzQ.dNeZlhjH.Yl/9zX3/F9wFp3y5.2E.88E/y', name: 'Mess Supervisor', role: 'admin', hostel: 'All', section: 'All', messType: 'All' },
-    { id: '2', rollNo: '221CS101', password: '$2a$10$6R6xG8wD6hS6oZ3i.Yw28.9sT7tN4yZ8gK.5eF7mO2wB9dE0yK5i6', name: 'Aravind Kumar', role: 'student', hostel: 'Sapphire Hostel', section: 'Boys', messType: 'Veg' },
-    { id: '3', rollNo: '221IT202', password: '$2a$10$6R6xG8wD6hS6oZ3i.Yw28.9sT7tN4yZ8gK.5eF7mO2wB9dE0yK5i6', name: 'Dharshini R', role: 'student', hostel: 'Ganga Hostel', section: 'Girls', messType: 'Non-Veg' },
-    { id: '4', rollNo: '221EC303', password: '$2a$10$6R6xG8wD6hS6oZ3i.Yw28.9sT7tN4yZ8gK.5eF7mO2wB9dE0yK5i6', name: 'Sanjay S', role: 'student', hostel: 'Emerald Hostel', section: 'Boys', messType: 'Veg' }
+    { id: '2', rollNo: '221CS101', password: '$2a$10$6R6xG8wD6hS6oZ3i.Yw28.9sT7tN4yZ8gK.5eF7mO2wB9dE0yK5i6', name: 'Aravind Kumar', role: 'student', hostel: 'Sapphire Hostel', section: 'Boys', messType: 'Standard (Veg+Egg)' },
+    { id: '3', rollNo: '221IT202', password: '$2a$10$6R6xG8wD6hS6oZ3i.Yw28.9sT7tN4yZ8gK.5eF7mO2wB9dE0yK5i6', name: 'Dharshini R', role: 'student', hostel: 'Ganga Hostel', section: 'Girls', messType: 'Standard (Veg+Egg)' },
+    { id: '4', rollNo: '221EC303', password: '$2a$10$6R6xG8wD6hS6oZ3i.Yw28.9sT7tN4yZ8gK.5eF7mO2wB9dE0yK5i6', name: 'Sanjay S', role: 'student', hostel: 'Emerald Hostel', section: 'Boys', messType: 'Standard (Veg+Egg)' }
   ],
   menu: [
     { id: 'm-boys-1', section: 'Boys', day: 'Monday', meal: 'Breakfast', items: 'Idly, Sambar, Coconut Chutney, Vadai, Tea/Coffee', popularity: 8, veg: true },
