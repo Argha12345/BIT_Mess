@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
-import BitLogo from '../common/BitLogo';
+import BitLogo from '@/components/common/BitLogo';
+
 import { FaEye, FaEyeSlash, FaShieldAlt, FaCheckCircle } from 'react-icons/fa';
 import { GoogleLogin } from '@react-oauth/google';
 

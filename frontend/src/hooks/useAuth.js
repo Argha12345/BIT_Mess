@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { api } from '../utils/api';
+import { api } from '@/api';
+
 
 export function useAuth({ setUser, setActivePage, onClose }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,13 +25,14 @@ export function useAuth({ setUser, setActivePage, onClose }) {
     try {
       const res = await api.auth.login(rollNo, password);
       setAuthSuccess('Welcome back! Logging you in...');
+      const targetPage = res.user.role === 'admin' ? 'admin-panel' : 'student-portal';
+      localStorage.setItem('user', JSON.stringify(res.user));
+      localStorage.setItem('activePage', targetPage);
       setTimeout(() => {
         if (setUser) setUser(res.user);
-        if (setActivePage) {
-          setActivePage(res.user.role === 'admin' ? 'admin-panel' : 'student-portal');
-        }
+        if (setActivePage) setActivePage(targetPage);
         if (onClose) onClose();
-      }, 1200);
+      }, 1000);
     } catch (err) {
       setAuthError(err.message || 'Authentication failed. Please check your credentials.');
       setIsLoading(false);
@@ -44,13 +46,14 @@ export function useAuth({ setUser, setActivePage, onClose }) {
     try {
       const res = await api.auth.googleLogin(googleIdToken);
       setAuthSuccess(`Welcome, ${res.user.name}! Sign-In successful...`);
+      const targetPage = res.user.role === 'admin' ? 'admin-panel' : 'student-portal';
+      localStorage.setItem('user', JSON.stringify(res.user));
+      localStorage.setItem('activePage', targetPage);
       setTimeout(() => {
         if (setUser) setUser(res.user);
-        if (setActivePage) {
-          setActivePage(res.user.role === 'admin' ? 'admin-panel' : 'student-portal');
-        }
+        if (setActivePage) setActivePage(targetPage);
         if (onClose) onClose();
-      }, 1200);
+      }, 1000);
     } catch (err) {
       setAuthError(err.message || 'Google Sign-In failed.');
       setIsLoading(false);

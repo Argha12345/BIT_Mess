@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { FaClock, FaCheck, FaTimes } from 'react-icons/fa';
-import StatusBadge from '../common/StatusBadge';
+import StatusBadge from '@/components/common/StatusBadge';
+
 
 const AdminReservationsTab = memo(function AdminReservationsTab({ adminHook }) {
   const {

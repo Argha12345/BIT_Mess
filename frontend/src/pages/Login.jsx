@@ -1,11 +1,9 @@
 import React, { useRef } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { useMousePosition } from '../hooks/useMousePosition';
-import { useAuth } from '../hooks/useAuth';
-import LoginScenery from '../components/login/LoginScenery';
-import LoginCharacterStage from '../components/login/LoginCharacterStage';
-import AuthForm from '../components/login/AuthForm';
+import { useMousePosition, useAuth } from '@/hooks';
+import { LoginScenery, LoginCharacterStage, AuthForm } from '@/components/features/login';
+
 
 export default function Login({ setUser, setActivePage, onClose }) {
   const containerRef = useRef(null);

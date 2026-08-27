@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { FaUserPlus, FaUsers, FaTrashAlt, FaKey, FaShieldAlt, FaBuilding, FaEdit, FaSave, FaTimes } from 'react-icons/fa';
-import { BOYS_HOSTELS, GIRLS_HOSTELS } from '../../config/constants';
+import { BOYS_HOSTELS, GIRLS_HOSTELS } from '@/config/constants';
+
 
 const AdminUsersTab = memo(function AdminUsersTab({ adminHook }) {
   const {

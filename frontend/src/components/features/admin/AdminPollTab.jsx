@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { FaVoteYea, FaPlus, FaCheckCircle, FaTrashAlt } from 'react-icons/fa';
-import StatusBadge from '../common/StatusBadge';
+import StatusBadge from '@/components/common/StatusBadge';
+
 
 const AdminPollTab = memo(function AdminPollTab({ adminHook }) {
   const {

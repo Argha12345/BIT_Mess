@@ -1,18 +1,16 @@
 import React, { useState, lazy, Suspense } from 'react';
-import Sidebar from './components/common/Sidebar';
-import Header from './components/common/Header';
-import OfflineScreen from './components/common/OfflineScreen';
-import { useNetworkStatus } from './hooks/useNetworkStatus';
-import { api } from './utils/api';
-
-import DashboardSkeleton from './components/dashboard/DashboardSkeleton';
+import { Sidebar, Header, OfflineScreen } from '@/components/common';
+import { useNetworkStatus } from '@/hooks';
+import { api } from '@/api';
+import DashboardSkeleton from '@/components/features/dashboard/DashboardSkeleton';
 
 // Code Splitting - Lazy-loaded Page Routes & Modals
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const StudentPortal = lazy(() => import('./pages/StudentPortal'));
-const AdminPanel = lazy(() => import('./pages/AdminPanel'));
-const Profile = lazy(() => import('./pages/Profile'));
-const Login = lazy(() => import('./pages/Login'));
+const Dashboard = lazy(() => import('@/pages/Dashboard'));
+const StudentPortal = lazy(() => import('@/pages/StudentPortal'));
+const AdminPanel = lazy(() => import('@/pages/AdminPanel'));
+const Profile = lazy(() => import('@/pages/Profile'));
+const Login = lazy(() => import('@/pages/Login'));
+
 
 const PageLoader = () => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '4rem', color: 'var(--primary)' }}>
@@ -21,16 +19,43 @@ const PageLoader = () => (
 );
 
 export default function App() {
-  const [user, setUser] = useState(null);
-  const [activePage, setActivePage] = useState('dashboard');
+  const [user, setUser] = useState(() => {
+    try {
+      const savedUser = localStorage.getItem('user');
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const [activePage, setActivePage] = useState(() => {
+    return localStorage.getItem('activePage') || 'dashboard';
+  });
+
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const networkStatus = useNetworkStatus();
 
+  const updateUser = (userData) => {
+    setUser(userData);
+    if (userData) {
+      localStorage.setItem('user', JSON.stringify(userData));
+    } else {
+      localStorage.removeItem('user');
+    }
+  };
+
+  const changeActivePage = (page) => {
+    setActivePage(page);
+    localStorage.setItem('activePage', page);
+  };
+
   const handleLogout = () => {
     api.auth.logout();
+    localStorage.removeItem('user');
+    localStorage.removeItem('activePage');
     setUser(null);
-    setActivePage('dashboard');
+    changeActivePage('dashboard');
   };
 
   const getPageTitle = () => {
@@ -56,7 +81,7 @@ export default function App() {
       <Sidebar 
         user={user} 
         activePage={activePage} 
-        setActivePage={setActivePage} 
+        setActivePage={changeActivePage} 
         handleLogout={handleLogout}
         onOpenLoginModal={() => setShowLoginModal(true)}
       />
@@ -84,8 +109,8 @@ export default function App() {
       {showLoginModal && (
         <Suspense fallback={<PageLoader />}>
           <Login 
-            setUser={setUser}
-            setActivePage={setActivePage}
+            setUser={updateUser}
+            setActivePage={changeActivePage}
             onClose={() => setShowLoginModal(false)}
           />
         </Suspense>

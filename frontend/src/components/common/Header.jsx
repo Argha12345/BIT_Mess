@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaShieldAlt, FaRegBell, FaSun, FaMoon, FaWifi, FaExclamationTriangle } from 'react-icons/fa';
-import { useNotifications } from '../../hooks/useNotifications';
+import { useNotifications } from '@/hooks';
+
 
 export default function Header({ user, pageTitle, networkStatus }) {
   const {

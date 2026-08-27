@@ -8,7 +8,8 @@ import {
   FaCheck,
   FaClock
 } from 'react-icons/fa';
-import { api } from '../utils/api';
+import { api } from '@/api';
+
 
 export default function StudentPortal({ user }) {
   const [activeTab, setActiveTab] = useState('polls');

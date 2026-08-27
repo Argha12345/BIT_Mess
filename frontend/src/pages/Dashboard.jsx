@@ -22,12 +22,12 @@ import {
   Pie, 
   Cell 
 } from 'recharts';
-import QueueVisualizer from '../components/dashboard/QueueVisualizer';
-import { api } from '../utils/api';
+import QueueVisualizer from '@/components/features/dashboard/QueueVisualizer';
+import DashboardSkeleton from '@/components/features/dashboard/DashboardSkeleton';
+import { api } from '@/api';
 
 const COLORS = ['#00e676', '#00e5ff', '#7c4dff', '#ffd600'];
 
-import DashboardSkeleton from '../components/dashboard/DashboardSkeleton';
 
 export default function Dashboard({ user, networkStatus }) {
   // Determine default section based on logged in user

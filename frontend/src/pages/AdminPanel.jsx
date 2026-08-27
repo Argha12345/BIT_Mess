@@ -1,16 +1,20 @@
 import React, { useState, lazy, Suspense } from 'react';
 import { FaTrashAlt, FaUtensils, FaVoteYea, FaClock, FaChartBar, FaUserCog, FaBullhorn, FaCheckCircle, FaUsers, FaClipboardList } from 'react-icons/fa';
-import { useAdminData } from '../hooks/useAdminData';
+import { useAdminData } from '@/hooks';
 
-import AdminWasteTab from '../components/admin/AdminWasteTab';
-import AdminMenuTab from '../components/admin/AdminMenuTab';
-import AdminPollTab from '../components/admin/AdminPollTab';
-import AdminReservationsTab from '../components/admin/AdminReservationsTab';
-import AdminUsersTab from '../components/admin/AdminUsersTab';
-import AdminNotificationsTab from '../components/admin/AdminNotificationsTab';
+
+import {
+  AdminWasteTab,
+  AdminMenuTab,
+  AdminPollTab,
+  AdminReservationsTab,
+  AdminUsersTab,
+  AdminNotificationsTab
+} from '@/components/features/admin';
 
 // Code-split heavy chart tab
-const AdminAnalyticsTab = lazy(() => import('../components/admin/AdminAnalyticsTab'));
+const AdminAnalyticsTab = lazy(() => import('@/components/features/admin/AdminAnalyticsTab'));
+
 
 const TabLoader = () => (
   <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem', color: 'var(--primary)' }}>

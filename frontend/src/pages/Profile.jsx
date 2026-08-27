@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaUser, FaLock, FaEye, FaEyeSlash, FaCheckCircle, FaShieldAlt, FaIdCard, FaBuilding, FaUtensils } from 'react-icons/fa';
-import { api } from '../utils/api';
+import { api } from '@/api';
+
 
 export default function Profile({ user }) {
   const [currentPassword, setCurrentPassword] = useState('');

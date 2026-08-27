@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { api } from '../utils/api';
+import { api } from '@/api';
+
 
 export function useAdminData() {
   const [selectedSection, setSelectedSection] = useState('Boys');
