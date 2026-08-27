@@ -33,9 +33,9 @@ export const authService = {
       throw err;
     }
 
-    const isMatch = user.password.startsWith('$2a$') || user.password.startsWith('$2b$')
+    const isMatch = (user.password.startsWith('$2a$') || user.password.startsWith('$2b$'))
       ? bcrypt.compareSync(password, user.password)
-      : user.password === password;
+      : false;
 
     if (!isMatch) {
       const err = new Error('Invalid Email Address or Password');
@@ -155,8 +155,10 @@ export const authService = {
       throw err;
     }
 
-    if (newPassword.length < 6) {
-      const err = new Error('New password must be at least 6 characters long');
+    // Password complexity rule: Minimum 8 characters, at least 1 letter and 1 number
+    const passwordPolicyRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordPolicyRegex.test(newPassword)) {
+      const err = new Error('New password must be at least 8 characters long and contain both letters and numbers.');
       err.status = 400;
       throw err;
     }
@@ -168,9 +170,9 @@ export const authService = {
       throw err;
     }
 
-    const isMatch = user.password.startsWith('$2a$') || user.password.startsWith('$2b$')
+    const isMatch = (user.password.startsWith('$2a$') || user.password.startsWith('$2b$'))
       ? bcrypt.compareSync(currentPassword, user.password)
-      : user.password === currentPassword;
+      : false;
 
     if (!isMatch) {
       const err = new Error('Current password is incorrect');

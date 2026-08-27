@@ -12,11 +12,17 @@ export const sanitizeString = (str) => {
 
 // Middleware to recursively sanitize request body, query params, and route params
 export const sanitizeInputMiddleware = (req, res, next) => {
+  const sensitiveKeys = ['password', 'currentPassword', 'newPassword', 'idToken'];
+
   const sanitizeObject = (obj) => {
     if (!obj || typeof obj !== 'object') return obj;
     for (const key in obj) {
       if (typeof obj[key] === 'string') {
-        obj[key] = sanitizeString(obj[key].trim());
+        if (sensitiveKeys.includes(key)) {
+          obj[key] = obj[key].trim();
+        } else {
+          obj[key] = sanitizeString(obj[key].trim());
+        }
       } else if (typeof obj[key] === 'object' && obj[key] !== null) {
         sanitizeObject(obj[key]);
       }
