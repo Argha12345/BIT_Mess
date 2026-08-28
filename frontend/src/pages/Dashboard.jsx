@@ -7,8 +7,11 @@ import {
   FaUtensils, 
   FaBullhorn, 
   FaSync, 
-  FaSpinner 
+  FaSpinner,
+  FaHeart,
+  FaRecycle
 } from 'react-icons/fa';
+
 import { 
   ResponsiveContainer, 
   AreaChart, 
@@ -20,11 +23,14 @@ import {
   Legend, 
   PieChart, 
   Pie, 
-  Cell 
+  Cell,
+  BarChart,
+  Bar
 } from 'recharts';
 import QueueVisualizer from '@/components/features/dashboard/QueueVisualizer';
 import DashboardSkeleton from '@/components/features/dashboard/DashboardSkeleton';
 import { api } from '@/api';
+
 
 const COLORS = ['#00e676', '#00e5ff', '#7c4dff', '#ffd600'];
 
@@ -125,6 +131,21 @@ export default function Dashboard({ user, networkStatus }) {
   const totalSavedWasteKg = selectedSection === 'Boys' ? 245 : 180; 
   const totalSavedCostRs = totalSavedWasteKg * 35; 
 
+  const formattedDailyTrends = (wasteData?.dailyTrends || []).map(item => {
+    const pre = item.preConsumer || 0;
+    const post = item.postConsumer || 0;
+    const total = item.total || (pre + post);
+    const reusable = typeof item.reusable === 'number' ? item.reusable : Math.round(pre * 0.7);
+    const nonReusable = typeof item.nonReusable === 'number' ? item.nonReusable : Math.max(0, total - reusable);
+    return {
+      ...item,
+      reusable,
+      nonReusable,
+      total
+    };
+  });
+
+
   return (
     <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
       
@@ -157,43 +178,48 @@ export default function Dashboard({ user, networkStatus }) {
           </p>
         </div>
 
-        {/* Section Select Toggle buttons */}
+        {/* Section Select Header: Boys see Boys, Girls see Girls, Admin and Unauthenticated Guest see both */}
         {(!user || user.role === 'admin') ? (
-          <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.02)', padding: '0.25rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-glass)' }}>
-            <button
-              onClick={() => setSelectedSection('Boys')}
-              className="btn"
-              style={{
-                background: selectedSection === 'Boys' ? 'var(--primary)' : 'transparent',
-                color: selectedSection === 'Boys' ? '#050a0c' : 'var(--text-secondary)',
-                padding: '0.4rem 1.2rem',
-                fontSize: '0.85rem',
-                fontWeight: 700,
-                borderRadius: 'calc(var(--radius-sm) - 2px)'
-              }}
-            >
-              Boys Mess
-            </button>
-            <button
-              onClick={() => setSelectedSection('Girls')}
-              className="btn"
-              style={{
-                background: selectedSection === 'Girls' ? 'var(--primary)' : 'transparent',
-                color: selectedSection === 'Girls' ? '#050a0c' : 'var(--text-secondary)',
-                padding: '0.4rem 1.2rem',
-                fontSize: '0.85rem',
-                fontWeight: 700,
-                borderRadius: 'calc(var(--radius-sm) - 2px)'
-              }}
-            >
-              Girls Mess
-            </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 700 }}>Select Mess View:</span>
+            <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.02)', padding: '0.25rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-glass)' }}>
+              <button
+                onClick={() => setSelectedSection('Boys')}
+                className="btn"
+                style={{
+                  background: selectedSection === 'Boys' ? 'var(--primary)' : 'transparent',
+                  color: selectedSection === 'Boys' ? '#050a0c' : 'var(--text-secondary)',
+                  padding: '0.4rem 1.2rem',
+                  fontSize: '0.85rem',
+                  fontWeight: 700,
+                  borderRadius: 'calc(var(--radius-sm) - 2px)'
+                }}
+              >
+                Boys Mess
+              </button>
+              <button
+                onClick={() => setSelectedSection('Girls')}
+                className="btn"
+                style={{
+                  background: selectedSection === 'Girls' ? 'var(--primary)' : 'transparent',
+                  color: selectedSection === 'Girls' ? '#050a0c' : 'var(--text-secondary)',
+                  padding: '0.4rem 1.2rem',
+                  fontSize: '0.85rem',
+                  fontWeight: 700,
+                  borderRadius: 'calc(var(--radius-sm) - 2px)'
+                }}
+              >
+                Girls Mess
+              </button>
+            </div>
           </div>
         ) : (
-          <div className="badge badge-info" style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}>
-            My Assigned Section: {user.section}
+          <div className="badge badge-info" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', fontWeight: 800 }}>
+            {user.section === 'Boys' ? '👦 Boys Mess Section' : '👧 Girls Mess Section'}
           </div>
         )}
+
+
       </div>
 
       {/* Top Banner Grid */}
@@ -233,12 +259,14 @@ export default function Dashboard({ user, networkStatus }) {
         </div>
       </div>
 
+
+
       {/* KPI Overview row */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', marginBottom: '1.5rem' }}>
-        <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', borderTop: '3px solid #ef4444' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Plate Waste Today</span>
-            <FaTrashAlt size={16} style={{ color: 'var(--color-danger)' }} />
+            <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Total Waste Logged</span>
+            <FaTrashAlt size={16} style={{ color: '#ef4444' }} />
           </div>
           <div>
             <span style={{ fontSize: '1.75rem', fontWeight: 800, fontFamily: 'var(--font-title)' }}>
@@ -246,52 +274,70 @@ export default function Dashboard({ user, networkStatus }) {
             </span>
           </div>
           <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            Pre-consumer: {metrics.preConsumerKg}kg • Post-consumer: {metrics.postConsumerKg}kg
+            Reusable: {metrics.reusableWasteKg || Math.round(metrics.preConsumerKg * 0.7)}kg • Non-reusable: {metrics.nonReusableWasteKg || Math.round(metrics.postConsumerKg)}kg
           </span>
         </div>
 
-        <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', borderTop: '3px solid #10b981' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Waste Prevented</span>
-            <FaLeaf size={16} style={{ color: 'var(--color-success)' }} />
+            <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>NGO Donated Meals</span>
+            <FaHeart size={16} style={{ color: '#10b981' }} />
           </div>
           <div>
-            <span style={{ fontSize: '1.75rem', fontWeight: 800, fontFamily: 'var(--font-title)', color: 'var(--primary)' }}>
-              {totalSavedWasteKg} <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>kg</span>
+            <span style={{ fontSize: '1.75rem', fontWeight: 800, fontFamily: 'var(--font-title)', color: '#10b981' }}>
+              {metrics.donatedMeals || 62} <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>meals</span>
             </span>
           </div>
           <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            Portion forecasting scale active
+            Dispatched to Hope & Sunshine Homes
           </span>
         </div>
 
-        <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Cost Saved (Est.)</span>
-            <FaRupeeSign size={16} style={{ color: 'var(--secondary)' }} />
-          </div>
-          <div>
-            <span style={{ fontSize: '1.75rem', fontWeight: 800, fontFamily: 'var(--font-title)', color: 'var(--secondary)' }}>
-              ₹{totalSavedCostRs.toLocaleString('en-IN')}
+        {user?.role === 'admin' ? (
+          <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', borderTop: '3px solid #8b5cf6' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Repurposed Food (Admin)</span>
+              <FaRecycle size={16} style={{ color: '#8b5cf6' }} />
+            </div>
+            <div>
+              <span style={{ fontSize: '1.75rem', fontWeight: 800, fontFamily: 'var(--font-title)', color: '#8b5cf6' }}>
+                {metrics.repurposedKg || 24} <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>kg</span>
+              </span>
+            </div>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              Reused safely in Dinner/Breakfast
             </span>
           </div>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            Saved through recipe planning
-          </span>
-        </div>
+        ) : (
+          <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', borderTop: '3px solid #8b5cf6' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Avg. Meal Waste</span>
+              <FaUsers size={16} style={{ color: '#8b5cf6' }} />
+            </div>
+            <div>
+              <span style={{ fontSize: '1.75rem', fontWeight: 800, fontFamily: 'var(--font-title)', color: '#8b5cf6' }}>
+                {metrics.averageWastePerDinerGrams || 140} <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>g/stud</span>
+              </span>
+            </div>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              Target threshold: &lt; 80 grams
+            </span>
+          </div>
+        )}
 
-        <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+
+        <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', borderTop: '3px solid #00e5ff' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Avg. Meal Waste</span>
-            <FaUsers size={16} style={{ color: 'var(--color-info)' }} />
+            <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>CO2e Saved (Est.)</span>
+            <FaLeaf size={16} style={{ color: '#00e5ff' }} />
           </div>
           <div>
-            <span style={{ fontSize: '1.75rem', fontWeight: 800, fontFamily: 'var(--font-title)' }}>
-              {metrics.averageWastePerDinerGrams || 140} <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>g/stud</span>
+            <span style={{ fontSize: '1.75rem', fontWeight: 800, fontFamily: 'var(--font-title)', color: '#00e5ff' }}>
+              {metrics.co2SavedKg || 115} <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>kg</span>
             </span>
           </div>
           <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            Target threshold: &lt; 80 grams
+            Diverted from municipal landfills
           </span>
         </div>
       </div>
@@ -302,47 +348,86 @@ export default function Dashboard({ user, networkStatus }) {
         {/* Charts section */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           
-          {/* Waste Trends Area Chart */}
+          {/* Graph 1: 🗓️ 1-Week Daily Food Wastage Trend Graph */}
           {wasteData?.dailyTrends && (
             <div className="glass-panel">
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1.25rem', fontFamily: 'var(--font-title)' }}>
-                Food Waste Volume Trends ({selectedSection} Mess)
-              </h3>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                <div>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 800, fontFamily: 'var(--font-title)', margin: 0 }}>
+                    🗓️ 1-Week Daily Food Wastage Trend ({selectedSection} Mess)
+                  </h3>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.2rem 0 0 0' }}>
+                    7-day breakdown of Reusable Edible Surplus vs Non-Reusable Plate Waste
+                  </p>
+                </div>
+                <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.75rem', fontWeight: 700 }}>
+                  <span style={{ color: '#10b981' }}>■ Reusable Surplus</span>
+                  <span style={{ color: '#ef4444' }}>■ Non-Reusable Waste</span>
+                </div>
+              </div>
+
               <div style={{ width: '100%', height: 260 }}>
                 <ResponsiveContainer>
-                  <AreaChart data={wasteData.dailyTrends} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                    <defs>
-                      <linearGradient id="colorPre" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#00e5ff" stopOpacity={0.2}/>
-                        <stop offset="95%" stopColor="#00e5ff" stopOpacity={0}/>
-                      </linearGradient>
-                      <linearGradient id="colorPost" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#ff1744" stopOpacity={0.2}/>
-                        <stop offset="95%" stopColor="#ff1744" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
+                  <BarChart data={formattedDailyTrends} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" />
                     <XAxis dataKey="date" stroke="var(--text-muted)" fontSize={11} />
                     <YAxis stroke="var(--text-muted)" fontSize={11} label={{ value: 'kg', angle: -90, position: 'insideLeft', fill: 'var(--text-muted)' }} />
-                    <Tooltip contentStyle={{ background: 'rgba(15, 23, 42, 0.9)', backdropFilter: 'blur(16px)', border: '1px solid var(--border-glass-light)', borderRadius: '12px', color: '#fff', boxShadow: 'var(--shadow-glass)' }} />
-                    <Legend wrapperStyle={{ fontSize: 12, paddingTop: 10 }} />
-                    <Area type="monotone" name="Kitchen (Pre-Consumer)" dataKey="preConsumer" stroke="#00d2ff" fillOpacity={1} fill="url(#colorPre)" strokeWidth={2.5} />
-                    <Area type="monotone" name="Plate Waste (Post-Consumer)" dataKey="postConsumer" stroke="#f87171" fillOpacity={1} fill="url(#colorPost)" strokeWidth={2.5} />
-                  </AreaChart>
+                    <Tooltip 
+                      contentStyle={{ background: 'rgba(15, 23, 42, 0.95)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '12px', color: '#fff' }}
+                      formatter={(val, name) => [`${val} kg`, name === 'reusable' ? '🌱 Reusable Surplus' : '🍂 Non-Reusable Waste']}
+                    />
+                    <Legend wrapperStyle={{ fontSize: 12, paddingTop: 6 }} />
+                    <Bar dataKey="reusable" name="Reusable (Edible Surplus)" fill="#10b981" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="nonReusable" name="Non-Reusable (Plate Waste)" fill="#ef4444" radius={[4, 4, 0, 0]} />
+                  </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
           )}
 
-          {/* Bottom sub-grid */}
+          {/* Graph 2: 🏆 Top 5 Food Wastage Graph & Meal Period Sub-Grid */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '1.5rem' }}>
             
+            {/* Graph 2: Top 5 Food Wastage Visual Bar Graph */}
+            {wasteData?.topWasteItems && (
+              <div className="glass-panel">
+                <h3 style={{ fontSize: '1rem', fontWeight: 800, marginBottom: '0.3rem', fontFamily: 'var(--font-title)' }}>
+                  🏆 Top 5 Food Wastage Graph
+                </h3>
+                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+                  Menu items generating the highest average food waste (kg)
+                </p>
+
+                <div style={{ width: '100%', height: 210 }}>
+                  <ResponsiveContainer>
+                    <BarChart 
+                      layout="vertical" 
+                      data={wasteData.topWasteItems} 
+                      margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+                      <XAxis type="number" stroke="var(--text-muted)" fontSize={10} unit=" kg" />
+                      <YAxis type="category" dataKey="name" stroke="var(--text-muted)" fontSize={10} width={90} />
+                      <Tooltip 
+                        contentStyle={{ background: 'rgba(15, 23, 42, 0.95)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px', color: '#fff' }}
+                        formatter={(val) => [`${val} kg avg`, 'Average Waste']}
+                      />
+                      <Bar dataKey="avgWaste" name="Avg Waste (kg)" fill="#ff416c" radius={[0, 4, 4, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            )}
+
             {/* Pie Chart: Waste by Meal Type */}
             {wasteData?.mealWasteData && (
               <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '1rem', fontFamily: 'var(--font-title)' }}>
-                  Waste by Meal Period
+                <h3 style={{ fontSize: '1rem', fontWeight: 800, marginBottom: '0.3rem', fontFamily: 'var(--font-title)' }}>
+                  🍽️ Waste by Meal Period
                 </h3>
+                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
+                  Distribution across Breakfast, Lunch & Dinner
+                </p>
                 <div style={{ width: '100%', height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -350,8 +435,8 @@ export default function Dashboard({ user, networkStatus }) {
                         data={wasteData.mealWasteData}
                         cx="50%"
                         cy="50%"
-                        innerRadius={50}
-                        outerRadius={70}
+                        innerRadius={45}
+                        outerRadius={65}
                         paddingAngle={3}
                         dataKey="total"
                       >
@@ -368,30 +453,6 @@ export default function Dashboard({ user, networkStatus }) {
                     <div key={item.name} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.75rem' }}>
                       <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: COLORS[index % COLORS.length] }} />
                       <span style={{ color: 'var(--text-secondary)' }}>{item.name}: {item.total}kg</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Waste correlation list */}
-            {wasteData?.topWasteItems && (
-              <div className="glass-panel">
-                <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '0.75rem', fontFamily: 'var(--font-title)' }}>
-                  High-Waste Menu Items
-                </h3>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
-                  Items with highest average waste generated.
-                </p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-                  {wasteData.topWasteItems.map((item, index) => (
-                    <div key={item.name} style={{ display: 'flex', alignItems: 'center', justifycontent: 'space-between', fontSize: '0.8rem' }}>
-                      <span style={{ color: 'var(--text-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '180px' }}>
-                        {index + 1}. {item.name}
-                      </span>
-                      <span className="badge badge-danger" style={{ fontSize: '0.7rem', padding: '0.15rem 0.5rem' }}>
-                        {item.avgWaste} kg avg
-                      </span>
                     </div>
                   ))}
                 </div>

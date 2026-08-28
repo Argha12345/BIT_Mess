@@ -36,3 +36,13 @@ export const STATUS_COLORS = {
   closed: 'badge-secondary',
   tie: 'badge-warning'
 };
+
+export const DONATION_ORGANIZATIONS = [
+  'Hope NGO Orphanage',
+  'Sunshine Senior Care Old Age Home',
+  'Little Angels Children Home',
+  'Peace Elderly Care Shelter'
+];
+
+export const REPURPOSE_MEAL_OPTIONS = ['Breakfast', 'Lunch', 'Snacks', 'Dinner'];
+

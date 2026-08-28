@@ -23,7 +23,21 @@
     "date": "2026-08-27",
     "meal": "Dinner",
     "reason": "Exam Preparation",
-    "status": "pending",
+    "status": "rejected",
     "createdAt": "2026-08-27T08:25:07.929Z"
+  },
+  {
+    "id": "r1787894958744-16",
+    "userId": "u1786092445329-560",
+    "rollNo": "arghachakrabortty.se23@bitsathy.ac.in",
+    "name": "Argha Chakrabortty",
+    "section": "Boys",
+    "hostel": "Emerald",
+    "messType": "Standard (Veg+Egg)",
+    "date": "2026-08-28",
+    "meal": "Dinner",
+    "reason": "Exam Preparation",
+    "status": "approved",
+    "createdAt": "2026-08-28T05:29:18.731Z"
   }
 ]

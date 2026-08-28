@@ -84,6 +84,14 @@ export const wasteApi = {
     method: 'POST',
     body: JSON.stringify(logData)
   }),
+  donateFood: (donateData) => fetchJson('/waste/donate', {
+    method: 'POST',
+    body: JSON.stringify(donateData)
+  }),
+  repurposeFood: (repurposeData) => fetchJson('/waste/repurpose', {
+    method: 'POST',
+    body: JSON.stringify(repurposeData)
+  }),
   submitFeedback: (feedbackData) => fetchJson('/waste/feedback', {
     method: 'POST',
     body: JSON.stringify(feedbackData)
@@ -92,6 +100,7 @@ export const wasteApi = {
   deleteFeedback: (id) => fetchJson(`/waste/feedback/${id}`, { method: 'DELETE' }),
   getRecommendation: (date, meal, section) => fetchJson(`/waste/recommendation?date=${date}&meal=${meal}${section ? `&section=${section}` : ''}`)
 };
+
 
 export const userApi = {
   getAll: () => fetchJson('/users'),

@@ -32,6 +32,17 @@ export const BUSINESS_CONFIG = {
   DEFAULT_BUFFER_FACTOR: 1.03
 };
 
+export const WASTE_REUSABILITY_TYPES = ['Reusable', 'Non-Reusable'];
+
+export const DONATION_ORGANIZATIONS = [
+  'Hope NGO Orphanage',
+  'Sunshine Senior Care Old Age Home',
+  'Little Angels Children Home',
+  'Peace Elderly Care Shelter'
+];
+
+export const REPURPOSE_MEAL_OPTIONS = ['Breakfast', 'Lunch', 'Snacks', 'Dinner'];
+
 export const DAYS_OF_WEEK = [
   'Sunday',
   'Monday',
@@ -41,3 +52,4 @@ export const DAYS_OF_WEEK = [
   'Friday',
   'Saturday'
 ];
+

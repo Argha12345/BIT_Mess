@@ -69,31 +69,56 @@ export const analyticsService = {
 
     let totalPreConsumer = 0;
     let totalPostConsumer = 0;
+    let totalReusable = 0;
+    let totalNonReusable = 0;
+    let totalDonatedKg = 0;
+    let totalDonatedMeals = 0;
+    let totalRepurposedKg = 0;
     let totalMealsCooked = 0;
     let totalActualDiners = 0;
 
     waste.forEach(w => {
-      totalPreConsumer += w.preConsumerWaste;
-      totalPostConsumer += w.postConsumerWaste;
-      totalMealsCooked += w.cookedMeals;
-      totalActualDiners += w.actualDiners;
+      totalPreConsumer += (w.preConsumerWaste || 0);
+      totalPostConsumer += (w.postConsumerWaste || 0);
+      totalMealsCooked += (w.cookedMeals || 0);
+      totalActualDiners += (w.actualDiners || 0);
+
+      // Reusable vs Non-Reusable calculation fallback logic
+      const logTotal = (w.preConsumerWaste || 0) + (w.postConsumerWaste || 0);
+      const reusable = typeof w.reusableWaste === 'number' ? w.reusableWaste : Math.round(w.preConsumerWaste * 0.7);
+      const nonReusable = typeof w.nonReusableWaste === 'number' ? w.nonReusableWaste : (logTotal - reusable);
+      
+      totalReusable += reusable;
+      totalNonReusable += nonReusable;
+
+      if (w.dispositionStatus === 'Donated to NGO') {
+        totalDonatedKg += reusable;
+        totalDonatedMeals += (w.donatedMeals || Math.round(reusable / BUSINESS_CONFIG.AVERAGE_KG_PER_MEAL));
+      } else if (w.dispositionStatus === 'Repurposed for Dinner' || w.dispositionStatus === 'Repurposed for Breakfast') {
+        totalRepurposedKg += reusable;
+      }
     });
 
     const totalWaste = totalPreConsumer + totalPostConsumer;
     const estimatedFinancialLossRs = totalWaste * BUSINESS_CONFIG.COST_PER_KG_WASTE_RS;
     const totalMealsWasted = Math.round(totalWaste / BUSINESS_CONFIG.AVERAGE_KG_PER_MEAL);
+    const co2SavedKg = Math.round((totalDonatedKg + totalRepurposedKg) * 2.5); // 2.5 kg CO2e saved per kg food diverted from landfill
 
     const uniqueDates = [...new Set(waste.map(w => w.date))].sort();
 
     const dailyTrends = uniqueDates.map(date => {
       const dayRecords = waste.filter(w => w.date === date);
-      const pre = dayRecords.reduce((sum, r) => sum + r.preConsumerWaste, 0);
-      const post = dayRecords.reduce((sum, r) => sum + r.postConsumerWaste, 0);
+      const pre = dayRecords.reduce((sum, r) => sum + (r.preConsumerWaste || 0), 0);
+      const post = dayRecords.reduce((sum, r) => sum + (r.postConsumerWaste || 0), 0);
+      const reusable = dayRecords.reduce((sum, r) => sum + (typeof r.reusableWaste === 'number' ? r.reusableWaste : Math.round((r.preConsumerWaste || 0) * 0.7)), 0);
+      const nonReusable = dayRecords.reduce((sum, r) => sum + (typeof r.nonReusableWaste === 'number' ? r.nonReusableWaste : ((r.preConsumerWaste || 0) + (r.postConsumerWaste || 0) - Math.round((r.preConsumerWaste || 0) * 0.7))), 0);
 
       return {
         date: date.substring(5),
         preConsumer: pre,
         postConsumer: post,
+        reusable,
+        nonReusable,
         total: pre + post
       };
     });
@@ -101,13 +126,17 @@ export const analyticsService = {
     const meals = ['Breakfast', 'Lunch', 'Dinner'];
     const mealWasteData = meals.map(meal => {
       const mealRecords = waste.filter(w => w.meal === meal);
-      const pre = mealRecords.reduce((sum, r) => sum + r.preConsumerWaste, 0);
-      const post = mealRecords.reduce((sum, r) => sum + r.postConsumerWaste, 0);
+      const pre = mealRecords.reduce((sum, r) => sum + (r.preConsumerWaste || 0), 0);
+      const post = mealRecords.reduce((sum, r) => sum + (r.postConsumerWaste || 0), 0);
+      const reusable = mealRecords.reduce((sum, r) => sum + (typeof r.reusableWaste === 'number' ? r.reusableWaste : Math.round((r.preConsumerWaste || 0) * 0.7)), 0);
+      const nonReusable = mealRecords.reduce((sum, r) => sum + (typeof r.nonReusableWaste === 'number' ? r.nonReusableWaste : ((r.preConsumerWaste || 0) + (r.postConsumerWaste || 0) - Math.round((r.preConsumerWaste || 0) * 0.7))), 0);
 
       return {
         name: meal,
         preConsumer: pre,
         postConsumer: post,
+        reusable,
+        nonReusable,
         total: pre + post
       };
     });
@@ -118,7 +147,7 @@ export const analyticsService = {
         menuGroups[w.menuItem] = { name: w.menuItem, count: 0, totalWaste: 0 };
       }
       menuGroups[w.menuItem].count++;
-      menuGroups[w.menuItem].totalWaste += (w.preConsumerWaste + w.postConsumerWaste);
+      menuGroups[w.menuItem].totalWaste += ((w.preConsumerWaste || 0) + (w.postConsumerWaste || 0));
     });
 
     const topWasteItems = Object.values(menuGroups)
@@ -134,6 +163,12 @@ export const analyticsService = {
         totalWasteKg: totalWaste,
         preConsumerKg: totalPreConsumer,
         postConsumerKg: totalPostConsumer,
+        reusableWasteKg: totalReusable,
+        nonReusableWasteKg: totalNonReusable,
+        donatedKg: totalDonatedKg,
+        donatedMeals: totalDonatedMeals,
+        repurposedKg: totalRepurposedKg,
+        co2SavedKg,
         totalMealsCooked,
         totalActualDiners,
         averageWastePerDinerGrams: Math.round((totalWaste / (totalActualDiners || 1)) * 1000),
@@ -145,6 +180,7 @@ export const analyticsService = {
       topWasteItems
     };
   },
+
 
   getQueuePredictions: async (section = 'Boys') => {
     return {
@@ -173,3 +209,4 @@ export const analyticsService = {
     };
   }
 };
+

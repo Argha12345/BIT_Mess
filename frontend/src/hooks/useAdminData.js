@@ -40,6 +40,16 @@ export function useAdminData() {
   const [actualDiners, setActualDiners] = useState(620);
   const [preConsumerWaste, setPreConsumerWaste] = useState(10);
   const [postConsumerWaste, setPostConsumerWaste] = useState(25);
+  const [reusableWaste, setReusableWaste] = useState(8);
+  const [nonReusableWaste, setNonReusableWaste] = useState(27);
+  const [dispositionStatus, setDispositionStatus] = useState('Disposed');
+
+  // Donation & Repurpose Action States
+  const [donateOrg, setDonateOrg] = useState('Hope NGO Orphanage');
+  const [donatedKg, setDonatedKg] = useState(15);
+  const [repurposeTargetMeal, setRepurposeTargetMeal] = useState('Dinner');
+  const [repurposedKg, setRepurposedKg] = useState(12);
+
 
   const [pollTargetDate, setPollTargetDate] = useState('');
   const [pollMeal, setPollMeal] = useState('Lunch');
@@ -203,14 +213,56 @@ export function useAdminData() {
         cookedMeals,
         actualDiners,
         preConsumerWaste,
-        postConsumerWaste
+        postConsumerWaste,
+        reusableWaste,
+        nonReusableWaste,
+        dispositionStatus
       });
-      showFeedbackMsg('Daily food waste log recorded!');
+      showFeedbackMsg('Daily food waste log recorded with Reusable/Non-reusable categorization!');
       fetchAdminData();
     } catch (err) {
       showFeedbackMsg(err.message || 'Failed to log waste', true);
     }
   };
+
+  const handleDonateFood = async (e) => {
+    e.preventDefault();
+    try {
+      await api.waste.donateFood({
+        section: selectedSection,
+        date: wasteDate,
+        meal: wasteMeal,
+        menuItem: wasteMenuItem || 'Fresh Surplus Food',
+        organizationName: donateOrg,
+        donatedKg: Number(donatedKg),
+        notes: `Fresh surplus dispatched to ${donateOrg}`
+      });
+      showFeedbackMsg(`Successfully registered ${donatedKg} kg food donation to ${donateOrg}!`);
+      fetchAdminData();
+    } catch (err) {
+      showFeedbackMsg(err.message || 'Failed to dispatch donation', true);
+    }
+  };
+
+  const handleRepurposeFood = async (e) => {
+    e.preventDefault();
+    try {
+      await api.waste.repurposeFood({
+        section: selectedSection,
+        date: wasteDate,
+        meal: wasteMeal,
+        menuItem: wasteMenuItem || 'Unserved Excess Food',
+        repurposedMeal: repurposeTargetMeal,
+        repurposedKg: Number(repurposedKg),
+        notes: `Surplus food repurposed for ${repurposeTargetMeal}`
+      });
+      showFeedbackMsg(`Successfully scheduled ${repurposedKg} kg excess food for ${repurposeTargetMeal} repurposing!`);
+      fetchAdminData();
+    } catch (err) {
+      showFeedbackMsg(err.message || 'Failed to schedule repurposing', true);
+    }
+  };
+
 
   const handleCreatePoll = async (e) => {
     e.preventDefault();
@@ -327,6 +379,20 @@ export function useAdminData() {
     setPreConsumerWaste,
     postConsumerWaste,
     setPostConsumerWaste,
+    reusableWaste,
+    setReusableWaste,
+    nonReusableWaste,
+    setNonReusableWaste,
+    dispositionStatus,
+    setDispositionStatus,
+    donateOrg,
+    setDonateOrg,
+    donatedKg,
+    setDonatedKg,
+    repurposeTargetMeal,
+    setRepurposeTargetMeal,
+    repurposedKg,
+    setRepurposedKg,
     pollTargetDate,
     setPollTargetDate,
     pollMeal,
@@ -353,6 +419,8 @@ export function useAdminData() {
     handleDeleteReview,
     handleUpdateMenuItem,
     handleLogWaste,
+    handleDonateFood,
+    handleRepurposeFood,
     handleCreatePoll,
     handleClosePoll,
     handleResolveTie,
@@ -361,3 +429,4 @@ export function useAdminData() {
     fetchAdminData
   };
 }
+

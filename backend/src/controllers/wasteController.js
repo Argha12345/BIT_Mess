@@ -22,6 +22,31 @@ export const logDailyWaste = async (req, res, next) => {
   }
 };
 
+export const donateExcessFood = async (req, res, next) => {
+  try {
+    const result = await wasteService.donateExcessFood(req.body);
+    res.status(201).json({
+      message: 'Excess food successfully registered for NGO donation!',
+      log: result
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const repurposeExcessFood = async (req, res, next) => {
+  try {
+    const result = await wasteService.repurposeExcessFood(req.body);
+    res.status(201).json({
+      message: 'Excess food successfully scheduled for meal repurposing!',
+      log: result
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 export const submitFeedback = async (req, res, next) => {
   try {
     const feedback = await wasteService.submitFeedback(req.body);

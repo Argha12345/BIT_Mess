@@ -38,5 +38,15 @@
     "hostel": "Sapphire",
     "section": "Boys",
     "messType": "Standard"
+  },
+  {
+    "id": "u1787897582066-154",
+    "rollNo": "sam.se23@bitsathy.ac.in",
+    "name": "Samantha",
+    "password": "$2b$10$yKtm7Q9MET98zplQJi8dY.W7UYYyDXbm5Nf9xZWdkWfDAX7lwLpY6",
+    "role": "student",
+    "hostel": "Cauvery",
+    "section": "Girls",
+    "messType": "Standard"
   }
 ]

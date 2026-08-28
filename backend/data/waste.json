@@ -1,5 +1,149 @@
 [
   {
+    "id": "w101",
+    "section": "Boys",
+    "date": "2026-07-20",
+    "meal": "Lunch",
+    "menuItem": "White Rice, Kara Kuzhambu",
+    "cookedMeals": 650,
+    "actualDiners": 610,
+    "preConsumerWaste": 12,
+    "postConsumerWaste": 28,
+    "reusableWaste": 9,
+    "nonReusableWaste": 31,
+    "dispositionStatus": "Donated to NGO",
+    "organizationName": "Hope NGO Orphanage"
+  },
+  {
+    "id": "w102",
+    "section": "Girls",
+    "date": "2026-07-20",
+    "meal": "Lunch",
+    "menuItem": "White Rice, Kara Kuzhambu",
+    "cookedMeals": 620,
+    "actualDiners": 590,
+    "preConsumerWaste": 10,
+    "postConsumerWaste": 24,
+    "reusableWaste": 8,
+    "nonReusableWaste": 26,
+    "dispositionStatus": "Repurposed for Dinner"
+  },
+  {
+    "id": "w103",
+    "section": "Boys",
+    "date": "2026-07-21",
+    "meal": "Breakfast",
+    "menuItem": "Rava Upma, Chutney",
+    "cookedMeals": 600,
+    "actualDiners": 530,
+    "preConsumerWaste": 15,
+    "postConsumerWaste": 35,
+    "reusableWaste": 10,
+    "nonReusableWaste": 40,
+    "dispositionStatus": "Disposed"
+  },
+  {
+    "id": "w104",
+    "section": "Girls",
+    "date": "2026-07-21",
+    "meal": "Breakfast",
+    "menuItem": "Rava Upma, Chutney",
+    "cookedMeals": 580,
+    "actualDiners": 520,
+    "preConsumerWaste": 14,
+    "postConsumerWaste": 32,
+    "reusableWaste": 9,
+    "nonReusableWaste": 37,
+    "dispositionStatus": "Disposed"
+  },
+  {
+    "id": "w105",
+    "section": "Boys",
+    "date": "2026-07-22",
+    "meal": "Lunch",
+    "menuItem": "Curd Rice, Potato Poriyal",
+    "cookedMeals": 640,
+    "actualDiners": 615,
+    "preConsumerWaste": 8,
+    "postConsumerWaste": 18,
+    "reusableWaste": 6,
+    "nonReusableWaste": 20,
+    "dispositionStatus": "Donated to NGO",
+    "organizationName": "Sunshine Senior Care Old Age Home"
+  },
+  {
+    "id": "w106",
+    "section": "Girls",
+    "date": "2026-07-22",
+    "meal": "Lunch",
+    "menuItem": "Curd Rice, Potato Poriyal",
+    "cookedMeals": 610,
+    "actualDiners": 590,
+    "preConsumerWaste": 7,
+    "postConsumerWaste": 16,
+    "reusableWaste": 5,
+    "nonReusableWaste": 18,
+    "dispositionStatus": "Donated to NGO",
+    "organizationName": "Little Angels Children Home"
+  },
+  {
+    "id": "w107",
+    "section": "Boys",
+    "date": "2026-07-23",
+    "meal": "Dinner",
+    "menuItem": "Semiya Upma, Coconut Chutney",
+    "cookedMeals": 580,
+    "actualDiners": 510,
+    "preConsumerWaste": 16,
+    "postConsumerWaste": 32,
+    "reusableWaste": 11,
+    "nonReusableWaste": 37,
+    "dispositionStatus": "Disposed"
+  },
+  {
+    "id": "w108",
+    "section": "Girls",
+    "date": "2026-07-23",
+    "meal": "Dinner",
+    "menuItem": "Semiya Upma, Coconut Chutney",
+    "cookedMeals": 560,
+    "actualDiners": 500,
+    "preConsumerWaste": 15,
+    "postConsumerWaste": 29,
+    "reusableWaste": 10,
+    "nonReusableWaste": 34,
+    "dispositionStatus": "Disposed"
+  },
+  {
+    "id": "w109",
+    "section": "Boys",
+    "date": "2026-07-24",
+    "meal": "Lunch",
+    "menuItem": "Lemon Rice, Vadai",
+    "cookedMeals": 660,
+    "actualDiners": 630,
+    "preConsumerWaste": 9,
+    "postConsumerWaste": 22,
+    "reusableWaste": 7,
+    "nonReusableWaste": 24,
+    "dispositionStatus": "Repurposed for Dinner"
+  },
+  {
+    "id": "w110",
+    "section": "Girls",
+    "date": "2026-07-24",
+    "meal": "Lunch",
+    "menuItem": "Lemon Rice, Vadai",
+    "cookedMeals": 630,
+    "actualDiners": 610,
+    "preConsumerWaste": 8,
+    "postConsumerWaste": 19,
+    "reusableWaste": 6,
+    "nonReusableWaste": 21,
+    "dispositionStatus": "Donated to NGO",
+    "organizationName": "Hope NGO Orphanage"
+  },
+  {
     "id": "w1",
     "section": "Boys",
     "date": "2026-07-25",
@@ -8,7 +152,12 @@
     "cookedMeals": 600,
     "actualDiners": 560,
     "preConsumerWaste": 8,
-    "postConsumerWaste": 21
+    "postConsumerWaste": 21,
+    "reusableWaste": 6,
+    "nonReusableWaste": 23,
+    "dispositionStatus": "Donated to NGO",
+    "organizationName": "Hope NGO Orphanage",
+    "donatedMeals": 17
   },
   {
     "id": "w2",
@@ -19,7 +168,11 @@
     "cookedMeals": 650,
     "actualDiners": 625,
     "preConsumerWaste": 10,
-    "postConsumerWaste": 29
+    "postConsumerWaste": 29,
+    "reusableWaste": 8,
+    "nonReusableWaste": 31,
+    "dispositionStatus": "Repurposed for Dinner",
+    "repurposedMeal": "Dinner"
   },
   {
     "id": "w3",
@@ -30,7 +183,12 @@
     "cookedMeals": 550,
     "actualDiners": 520,
     "preConsumerWaste": 6,
-    "postConsumerWaste": 19
+    "postConsumerWaste": 19,
+    "reusableWaste": 4,
+    "nonReusableWaste": 21,
+    "dispositionStatus": "Donated to NGO",
+    "organizationName": "Sunshine Senior Care Old Age Home",
+    "donatedMeals": 11
   },
   {
     "id": "w4",
@@ -41,7 +199,12 @@
     "cookedMeals": 600,
     "actualDiners": 560,
     "preConsumerWaste": 7,
-    "postConsumerWaste": 21
+    "postConsumerWaste": 21,
+    "reusableWaste": 5,
+    "nonReusableWaste": 23,
+    "dispositionStatus": "Donated to NGO",
+    "organizationName": "Little Angels Children Home",
+    "donatedMeals": 14
   },
   {
     "id": "w5",
@@ -52,7 +215,11 @@
     "cookedMeals": 650,
     "actualDiners": 625,
     "preConsumerWaste": 10,
-    "postConsumerWaste": 29
+    "postConsumerWaste": 29,
+    "reusableWaste": 8,
+    "nonReusableWaste": 31,
+    "dispositionStatus": "Repurposed for Dinner",
+    "repurposedMeal": "Dinner"
   },
   {
     "id": "w6",
@@ -63,7 +230,10 @@
     "cookedMeals": 550,
     "actualDiners": 520,
     "preConsumerWaste": 6,
-    "postConsumerWaste": 19
+    "postConsumerWaste": 19,
+    "reusableWaste": 4,
+    "nonReusableWaste": 21,
+    "dispositionStatus": "Disposed"
   },
   {
     "id": "w7",
@@ -74,7 +244,12 @@
     "cookedMeals": 600,
     "actualDiners": 590,
     "preConsumerWaste": 9,
-    "postConsumerWaste": 12
+    "postConsumerWaste": 12,
+    "reusableWaste": 7,
+    "nonReusableWaste": 14,
+    "dispositionStatus": "Donated to NGO",
+    "organizationName": "Hope NGO Orphanage",
+    "donatedMeals": 20
   },
   {
     "id": "w8",
@@ -85,7 +260,12 @@
     "cookedMeals": 700,
     "actualDiners": 695,
     "preConsumerWaste": 5,
-    "postConsumerWaste": 14
+    "postConsumerWaste": 14,
+    "reusableWaste": 4,
+    "nonReusableWaste": 15,
+    "dispositionStatus": "Donated to NGO",
+    "organizationName": "Sunshine Senior Care Old Age Home",
+    "donatedMeals": 11
   },
   {
     "id": "w9",
@@ -96,39 +276,9 @@
     "cookedMeals": 600,
     "actualDiners": 597,
     "preConsumerWaste": 4,
-    "postConsumerWaste": 16
-  },
-  {
-    "id": "w10",
-    "section": "Girls",
-    "date": "2026-07-26",
-    "meal": "Breakfast",
-    "menuItem": "Pongal, Sambar",
-    "cookedMeals": 600,
-    "actualDiners": 590,
-    "preConsumerWaste": 9,
-    "postConsumerWaste": 13
-  },
-  {
-    "id": "w11",
-    "section": "Girls",
-    "date": "2026-07-26",
-    "meal": "Lunch",
-    "menuItem": "Veg Biryani, Chips",
-    "cookedMeals": 700,
-    "actualDiners": 695,
-    "preConsumerWaste": 5,
-    "postConsumerWaste": 14
-  },
-  {
-    "id": "w12",
-    "section": "Girls",
-    "date": "2026-07-26",
-    "meal": "Dinner",
-    "menuItem": "Parotta, Paneer Curry",
-    "cookedMeals": 600,
-    "actualDiners": 597,
-    "preConsumerWaste": 4,
-    "postConsumerWaste": 16
+    "postConsumerWaste": 16,
+    "reusableWaste": 3,
+    "nonReusableWaste": 17,
+    "dispositionStatus": "Disposed"
   }
 ]

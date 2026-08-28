@@ -6,12 +6,16 @@ export const wasteService = {
     return await wasteRepository.getLogs(section);
   },
 
-  logDailyWaste: async ({ section, date, meal, menuItem, cookedMeals, actualDiners, preConsumerWaste, postConsumerWaste }) => {
+  logDailyWaste: async ({ section, date, meal, menuItem, cookedMeals, actualDiners, preConsumerWaste, postConsumerWaste, reusableWaste, nonReusableWaste, dispositionStatus, organizationName, repurposedMeal, notes }) => {
     if (!section || !date || !meal || !menuItem || cookedMeals === undefined || actualDiners === undefined || preConsumerWaste === undefined || postConsumerWaste === undefined) {
       const err = new Error('All waste logging fields (including section) are required');
       err.status = 400;
       throw err;
     }
+
+    const total = Number(preConsumerWaste) + Number(postConsumerWaste);
+    const reusable = reusableWaste !== undefined ? Number(reusableWaste) : Math.round(Number(preConsumerWaste) * 0.7);
+    const nonReusable = nonReusableWaste !== undefined ? Number(nonReusableWaste) : (total - reusable);
 
     return await wasteRepository.addLog({
       section,
@@ -21,9 +25,69 @@ export const wasteService = {
       cookedMeals: Number(cookedMeals),
       actualDiners: Number(actualDiners),
       preConsumerWaste: Number(preConsumerWaste),
-      postConsumerWaste: Number(postConsumerWaste)
+      postConsumerWaste: Number(postConsumerWaste),
+      reusableWaste: reusable,
+      nonReusableWaste: nonReusable,
+      dispositionStatus: dispositionStatus || 'Disposed',
+      organizationName: organizationName || '',
+      repurposedMeal: repurposedMeal || '',
+      notes: notes || ''
     });
   },
+
+  donateExcessFood: async ({ wasteId, section, date, meal, menuItem, organizationName, donatedKg, donatedMeals, notes }) => {
+    if (!organizationName || !donatedKg) {
+      const err = new Error('Organization Name and Donated Quantity (kg) are required');
+      err.status = 400;
+      throw err;
+    }
+
+    const logEntry = {
+      section: section || 'Boys',
+      date: date || new Date().toISOString().split('T')[0],
+      meal: meal || 'Lunch',
+      menuItem: menuItem || 'Excess Fresh Surplus',
+      cookedMeals: 600,
+      actualDiners: 550,
+      preConsumerWaste: Number(donatedKg),
+      postConsumerWaste: 0,
+      reusableWaste: Number(donatedKg),
+      nonReusableWaste: 0,
+      dispositionStatus: 'Donated to NGO',
+      organizationName,
+      donatedMeals: donatedMeals ? Number(donatedMeals) : Math.round(Number(donatedKg) / 0.35),
+      notes: notes || `Fresh surplus dispatched to ${organizationName}`
+    };
+
+    return await wasteRepository.addLog(logEntry);
+  },
+
+  repurposeExcessFood: async ({ section, date, meal, menuItem, repurposedMeal, repurposedKg, notes }) => {
+    if (!repurposedMeal || !repurposedKg) {
+      const err = new Error('Target Repurpose Meal and Quantity (kg) are required');
+      err.status = 400;
+      throw err;
+    }
+
+    const logEntry = {
+      section: section || 'Boys',
+      date: date || new Date().toISOString().split('T')[0],
+      meal: meal || 'Lunch',
+      menuItem: menuItem || 'Unserved Excess Food',
+      cookedMeals: 600,
+      actualDiners: 550,
+      preConsumerWaste: Number(repurposedKg),
+      postConsumerWaste: 0,
+      reusableWaste: Number(repurposedKg),
+      nonReusableWaste: 0,
+      dispositionStatus: `Repurposed for ${repurposedMeal}`,
+      repurposedMeal,
+      notes: notes || `Excess food repurposed for ${repurposedMeal}`
+    };
+
+    return await wasteRepository.addLog(logEntry);
+  },
+
 
   submitFeedback: async ({ userId, rollNo, name, section, mealId, date, rating, comment }) => {
     if (!userId || !rollNo || !name || !section || !mealId || !date || !rating) {
