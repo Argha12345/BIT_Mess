@@ -2,40 +2,73 @@ import { wasteRepository } from '../repositories/wasteRepository.js';
 import { notificationRepository } from '../repositories/notificationRepository.js';
 import { BUSINESS_CONFIG } from '../config/constants.js';
 
-// SRP Helper: Calculate meal period, active slot, and occupancy percentage by hour/minute
+// Official Mess Dining Timings:
+// - Morning Breakfast: 07:00 AM – 08:30 AM (420 - 510 min)
+// - Afternoon Lunch:   12:15 PM – 01:45 PM (735 - 825 min)
+// - Evening Snacks:    04:00 PM – 05:30 PM (960 - 1050 min)
+// - Night Dinner:      07:00 PM – 09:00 PM (1140 - 1260 min)
 function calculateMealPeriodAndOccupancy(hour, minute) {
-  let currentMeal = 'Lunch';
-  let activeSlots = ['12:00 PM - 12:30 PM', '12:30 PM - 01:00 PM', '01:00 PM - 01:30 PM', '01:30 PM - 02:00 PM'];
-  let currentSlot = activeSlots[1];
-  let occupancyPercentage = 45;
+  const currentMinutes = hour * 60 + minute;
 
-  if (hour >= 7 && hour < 9) {
+  let isDiningActive = false;
+  let currentMeal = null;
+  let currentSlot = null;
+  let occupancyPercentage = 0;
+  let nextMeal = null;
+  let nextMealTime = null;
+
+  if (currentMinutes >= 420 && currentMinutes <= 510) {
+    // 07:00 AM - 08:30 AM
+    isDiningActive = true;
     currentMeal = 'Breakfast';
-    activeSlots = ['07:00 AM - 07:30 AM', '07:30 AM - 08:00 AM', '08:00 AM - 08:30 AM', '08:30 AM - 09:00 AM'];
-    currentSlot = hour === 7 ? (minute < 30 ? activeSlots[0] : activeSlots[1]) : (minute < 30 ? activeSlots[2] : activeSlots[3]);
-    occupancyPercentage = hour === 7 ? (minute < 30 ? 25 : 65) : (minute < 30 ? 80 : 35);
-  } else if (hour >= 12 && hour < 14) {
+    currentSlot = currentMinutes < 465 ? '07:00 AM - 07:45 AM' : '07:45 AM - 08:30 AM';
+    occupancyPercentage = currentMinutes < 465 ? 45 : 75;
+  } else if (currentMinutes >= 735 && currentMinutes <= 825) {
+    // 12:15 PM - 01:45 PM
+    isDiningActive = true;
     currentMeal = 'Lunch';
-    activeSlots = ['12:00 PM - 12:30 PM', '12:30 PM - 01:00 PM', '01:00 PM - 01:30 PM', '01:30 PM - 02:00 PM'];
-    currentSlot = hour === 12 ? (minute < 30 ? activeSlots[0] : activeSlots[1]) : (minute < 30 ? activeSlots[2] : activeSlots[3]);
-    occupancyPercentage = hour === 12 ? (minute < 30 ? 30 : 75) : (minute < 30 ? 90 : 40);
-  } else if (hour >= 16 && hour < 18) {
+    currentSlot = currentMinutes < 780 ? '12:15 PM - 01:00 PM' : '01:00 PM - 01:45 PM';
+    occupancyPercentage = currentMinutes < 780 ? 80 : 55;
+  } else if (currentMinutes >= 960 && currentMinutes <= 1050) {
+    // 04:00 PM - 05:30 PM
+    isDiningActive = true;
     currentMeal = 'Snacks';
-    activeSlots = ['04:30 PM - 05:00 PM', '05:00 PM - 05:30 PM'];
-    currentSlot = (hour === 16 && minute >= 30) ? activeSlots[0] : activeSlots[1];
-    occupancyPercentage = (hour === 16 && minute >= 30) ? 55 : 30;
-  } else if (hour >= 19 && hour < 21) {
+    currentSlot = currentMinutes < 1005 ? '04:00 PM - 04:45 PM' : '04:45 PM - 05:30 PM';
+    occupancyPercentage = currentMinutes < 1005 ? 60 : 35;
+  } else if (currentMinutes >= 1140 && currentMinutes <= 1260) {
+    // 07:00 PM - 09:00 PM
+    isDiningActive = true;
     currentMeal = 'Dinner';
-    activeSlots = ['07:00 PM - 07:30 PM', '07:30 AM - 08:00 PM', '08:00 PM - 08:30 PM', '08:30 PM - 09:00 PM'];
-    currentSlot = hour === 19 ? (minute < 30 ? activeSlots[0] : activeSlots[1]) : (minute < 30 ? activeSlots[2] : activeSlots[3]);
-    occupancyPercentage = hour === 19 ? (minute < 30 ? 35 : 70) : (minute < 30 ? 85 : 45);
+    currentSlot = currentMinutes < 1200 ? '07:00 PM - 08:00 PM' : '08:00 PM - 09:00 PM';
+    occupancyPercentage = currentMinutes < 1200 ? 85 : 45;
+  } else {
+    isDiningActive = false;
+    if (currentMinutes < 420) {
+      nextMeal = 'Breakfast';
+      nextMealTime = '07:00 AM';
+    } else if (currentMinutes < 735) {
+      nextMeal = 'Lunch';
+      nextMealTime = '12:15 PM';
+    } else if (currentMinutes < 960) {
+      nextMeal = 'Snacks';
+      nextMealTime = '04:00 PM';
+    } else if (currentMinutes < 1140) {
+      nextMeal = 'Dinner';
+      nextMealTime = '07:00 PM';
+    } else {
+      nextMeal = 'Breakfast (Tomorrow)';
+      nextMealTime = '07:00 AM';
+    }
   }
 
-  return { currentMeal, currentSlot, occupancyPercentage };
+  return { isDiningActive, currentMeal, currentSlot, occupancyPercentage, nextMeal, nextMealTime };
 }
 
 // SRP Helper: Calculate wait time and congestion status
-function calculateQueueWaitStatus(occupancyPercentage) {
+function calculateQueueWaitStatus(occupancyPercentage, isDiningActive) {
+  if (!isDiningActive) {
+    return { averageWaitTimeMinutes: 0, queueStatus: 'Closed' };
+  }
   const averageWaitTimeMinutes = Math.max(1, Math.round(1 + (occupancyPercentage * 0.12)));
   let queueStatus = 'Smooth';
   if (averageWaitTimeMinutes > 9) queueStatus = 'Congested';
@@ -47,19 +80,22 @@ function calculateQueueWaitStatus(occupancyPercentage) {
 export const analyticsService = {
   getLiveStatus: async (section = 'Boys') => {
     const now = new Date();
-    const { currentMeal, currentSlot, occupancyPercentage } = calculateMealPeriodAndOccupancy(now.getHours(), now.getMinutes());
-    const { averageWaitTimeMinutes, queueStatus } = calculateQueueWaitStatus(occupancyPercentage);
+    const { isDiningActive, currentMeal, currentSlot, occupancyPercentage, nextMeal, nextMealTime } = calculateMealPeriodAndOccupancy(now.getHours(), now.getMinutes());
+    const { averageWaitTimeMinutes, queueStatus } = calculateQueueWaitStatus(occupancyPercentage, isDiningActive);
 
     const announcements = await notificationRepository.getNotifications(section);
 
     return {
-      currentMeal,
-      currentSlot,
-      totalCheckedInThisMeal: Math.round(occupancyPercentage * 7.5),
-      occupancyPercentage,
+      isDiningActive,
+      currentMeal: currentMeal || nextMeal,
+      currentSlot: currentSlot || 'Service Closed',
+      nextMeal,
+      nextMealTime,
+      totalCheckedInThisMeal: isDiningActive ? Math.round(occupancyPercentage * 7.5) : 0,
+      occupancyPercentage: isDiningActive ? occupancyPercentage : 0,
       averageWaitTimeMinutes,
       queueStatus,
-      servingCountersOpen: 3,
+      servingCountersOpen: isDiningActive ? 1 : 0,
       announcements
     };
   },
@@ -185,26 +221,20 @@ export const analyticsService = {
   getQueuePredictions: async (section = 'Boys') => {
     return {
       Breakfast: [
-        { slot: '07:00 AM - 07:30 AM', avgOccupancy: 120, waitTimeMin: 2, label: 'Fast & Quiet' },
-        { slot: '07:30 AM - 08:00 AM', avgOccupancy: 280, waitTimeMin: 6, label: 'Moderately Busy' },
-        { slot: '08:00 AM - 08:30 AM', avgOccupancy: 340, waitTimeMin: 9, label: 'Peak Hour' },
-        { slot: '08:30 AM - 09:00 AM', avgOccupancy: 150, waitTimeMin: 3, label: 'Moderate' }
+        { slot: '07:00 AM - 07:45 AM', avgOccupancy: 190, waitTimeMin: 3, label: 'Fast & Smooth' },
+        { slot: '07:45 AM - 08:30 AM', avgOccupancy: 360, waitTimeMin: 8, label: 'Peak Rush Window' }
       ],
       Lunch: [
-        { slot: '12:00 PM - 12:30 PM', avgOccupancy: 180, waitTimeMin: 3, label: 'Fast' },
-        { slot: '12:30 PM - 01:00 PM', avgOccupancy: 360, waitTimeMin: 8, label: 'Crowded' },
-        { slot: '01:00 PM - 01:30 PM', avgOccupancy: 410, waitTimeMin: 11, label: 'Peak Hour' },
-        { slot: '01:30 PM - 02:00 PM', avgOccupancy: 200, waitTimeMin: 4, label: 'Moderate' }
+        { slot: '12:15 PM - 01:00 PM', avgOccupancy: 410, waitTimeMin: 10, label: 'Peak Lunch Window' },
+        { slot: '01:00 PM - 01:45 PM', avgOccupancy: 240, waitTimeMin: 5, label: 'Moderate Traffic' }
       ],
       Snacks: [
-        { slot: '04:30 PM - 05:00 PM', avgOccupancy: 290, waitTimeMin: 6, label: 'Moderately Busy' },
-        { slot: '05:00 PM - 05:30 PM', avgOccupancy: 140, waitTimeMin: 2, label: 'Quiet' }
+        { slot: '04:00 PM - 04:45 PM', avgOccupancy: 280, waitTimeMin: 6, label: 'Moderately Busy' },
+        { slot: '04:45 PM - 05:30 PM', avgOccupancy: 150, waitTimeMin: 2, label: 'Quiet Flow' }
       ],
       Dinner: [
-        { slot: '07:00 PM - 07:30 PM', avgOccupancy: 150, waitTimeMin: 3, label: 'Quiet' },
-        { slot: '07:30 PM - 08:00 PM', avgOccupancy: 320, waitTimeMin: 7, label: 'Crowded' },
-        { slot: '08:00 PM - 08:30 PM', avgOccupancy: 380, waitTimeMin: 10, label: 'Peak Hour' },
-        { slot: '08:30 PM - 09:00 PM', avgOccupancy: 190, waitTimeMin: 4, label: 'Moderate' }
+        { slot: '07:00 PM - 08:00 PM', avgOccupancy: 390, waitTimeMin: 11, label: 'Peak Dinner Window' },
+        { slot: '08:00 PM - 09:00 PM', avgOccupancy: 210, waitTimeMin: 4, label: 'Moderate Flow' }
       ]
     };
   }

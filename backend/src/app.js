@@ -35,7 +35,7 @@ app.use('/api', apiLimiter, apiRouter);
 // Root path diagnostic route
 app.get('/', (req, res) => {
   res.json({
-    message: 'Welcome to Bannari Amman Institute of Technology (BIT) Hostel Mess Foot-Traffic & Waste Reduction API',
+    message: 'Welcome to Bannari Amman Institute of Technology (BIT) Hostel Mess Food-Traffic & Waste Reduction API',
     status: 'Operational',
     version: '1.0.0',
     timestamp: new Date().toISOString()

@@ -232,7 +232,7 @@ export default function Dashboard({ user, networkStatus }) {
           </div>
           <div style={{ flex: 1 }}>
             <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: 'bold' }}>
-              Active Menu • {liveStatus?.currentMeal || 'Lunch'}
+              {liveStatus?.isDiningActive ? 'Active Menu' : 'Upcoming Meal Menu'} • {liveStatus?.currentMeal || 'Breakfast'}
             </span>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '0.2rem 0', fontFamily: 'var(--font-title)' }}>
               {getTodayMenu()}

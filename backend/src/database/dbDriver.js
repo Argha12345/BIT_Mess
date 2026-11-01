@@ -3,6 +3,7 @@ import existsFs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
+import { MongoClient } from 'mongodb';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,8 +12,35 @@ const __dirname = path.dirname(__filename);
 // beside the backend unless DATA_DIR is explicitly configured.
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, '..', '..', 'data');
 
+// MongoDB client & connection caching
+let mongoClient = null;
+let mongoDb = null;
+let connectionAttempted = false;
+
+export async function getMongoDb() {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) return null;
+  if (mongoDb) return mongoDb;
+  if (connectionAttempted && !mongoClient) return null;
+
+  try {
+    connectionAttempted = true;
+    mongoClient = new MongoClient(uri, { serverSelectionTimeoutMS: 2000, connectTimeoutMS: 2000 });
+    await mongoClient.connect();
+    const dbName = process.env.MONGODB_DB_NAME || 'bit_mess';
+    mongoDb = mongoClient.db(dbName);
+    console.log(`[MongoDB] Connected successfully to database: ${dbName}`);
+    return mongoDb;
+  } catch (err) {
+    console.warn(`[MongoDB] Could not connect (${err.message}). Using local JSON fallback.`);
+    mongoClient = null;
+    mongoDb = null;
+    return null;
+  }
+}
+
 // Initial seed data generator
-const SEED_DATA = {
+export const SEED_DATA = {
   users: [
     { id: '1', rollNo: 'admin1', password: '$2a$10$wN1D4iVlMsk8nQcTzQ.dNeZlhjH.Yl/9zX3/F9wFp3y5.2E.88E/y', name: 'Mess Supervisor', role: 'admin', hostel: 'All', section: 'All', messType: 'All' },
     { id: '2', rollNo: '221CS101', password: '$2a$10$6R6xG8wD6hS6oZ3i.Yw28.9sT7tN4yZ8gK.5eF7mO2wB9dE0yK5i6', name: 'Aravind Kumar', role: 'student', hostel: 'Sapphire Hostel', section: 'Boys', messType: 'Standard (Veg+Egg)' },
@@ -114,7 +142,7 @@ const SEED_DATA = {
   ]
 };
 
-// Ensure data directory exists asynchronously
+// Ensure data directory exists asynchronously for file-based fallback
 async function ensureDataDir() {
   try {
     await fs.mkdir(DATA_DIR, { recursive: true });
@@ -126,7 +154,50 @@ async function ensureDataDir() {
 // In-memory collection cache for performance
 const memoryCache = new Map();
 
+// Auto-seed collection in MongoDB if empty
+const seededCollections = new Set();
+async function ensureMongoCollectionSeeded(db, collectionName) {
+  if (seededCollections.has(collectionName)) return;
+  try {
+    const coll = db.collection(collectionName);
+    const count = await coll.countDocuments();
+    if (count === 0) {
+      let dataToSeed = SEED_DATA[collectionName] || [];
+      const jsonPath = path.join(DATA_DIR, `${collectionName}.json`);
+      if (existsFs.existsSync(jsonPath)) {
+        try {
+          const raw = await fs.readFile(jsonPath, 'utf-8');
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            dataToSeed = parsed;
+          }
+        } catch (_) {}
+      }
+      if (dataToSeed.length > 0) {
+        const docs = dataToSeed.map(d => {
+          const { _id, ...clean } = d;
+          return clean;
+        });
+        await coll.insertMany(docs);
+        console.log(`[MongoDB] Initialized collection '${collectionName}' with ${docs.length} documents.`);
+      }
+    }
+    seededCollections.add(collectionName);
+  } catch (err) {
+    console.error(`[MongoDB] Error initializing collection ${collectionName}:`, err.message);
+  }
+}
+
 export const readCollectionAsync = async (collectionName) => {
+  const db = await getMongoDb();
+  if (db) {
+    await ensureMongoCollectionSeeded(db, collectionName);
+    const docs = await db.collection(collectionName).find({}, { projection: { _id: 0 } }).toArray();
+    memoryCache.set(collectionName, docs);
+    return docs;
+  }
+
+  // File fallback
   await ensureDataDir();
   const filePath = path.join(DATA_DIR, `${collectionName}.json`);
 
@@ -172,6 +243,22 @@ async function writeCollectionAtomic(filePath, data) {
 }
 
 export const saveCollectionAsync = async (collectionName, data) => {
+  const db = await getMongoDb();
+  if (db) {
+    const coll = db.collection(collectionName);
+    await coll.deleteMany({});
+    if (Array.isArray(data) && data.length > 0) {
+      const docs = data.map(d => {
+        const { _id, ...clean } = d;
+        return clean;
+      });
+      await coll.insertMany(docs);
+    }
+    memoryCache.set(collectionName, data);
+    return true;
+  }
+
+  // File fallback
   await ensureDataDir();
   const filePath = path.join(DATA_DIR, `${collectionName}.json`);
   try {
@@ -185,17 +272,47 @@ export const saveCollectionAsync = async (collectionName, data) => {
 };
 
 export const insertRecordAsync = async (collectionName, record) => {
-  const collection = await readCollectionAsync(collectionName);
   const newRecord = {
     id: `${collectionName.charAt(0)}${Date.now()}-${Math.floor(Math.random() * 1000)}`,
     ...record
   };
+
+  const db = await getMongoDb();
+  if (db) {
+    await ensureMongoCollectionSeeded(db, collectionName);
+    const { _id, ...clean } = newRecord;
+    await db.collection(collectionName).insertOne({ ...clean });
+    const cached = memoryCache.get(collectionName);
+    if (cached) cached.push(newRecord);
+    return newRecord;
+  }
+
+  // File fallback
+  const collection = await readCollectionAsync(collectionName);
   collection.push(newRecord);
   await saveCollectionAsync(collectionName, collection);
   return newRecord;
 };
 
 export const updateRecordAsync = async (collectionName, id, updates) => {
+  const db = await getMongoDb();
+  if (db) {
+    const { _id, ...safeUpdates } = updates;
+    const result = await db.collection(collectionName).findOneAndUpdate(
+      { id },
+      { $set: safeUpdates },
+      { returnDocument: 'after', projection: { _id: 0 } }
+    );
+    const updatedDoc = result?.value || result;
+    const cached = memoryCache.get(collectionName);
+    if (cached) {
+      const index = cached.findIndex(item => item.id === id);
+      if (index !== -1) cached[index] = { ...cached[index], ...safeUpdates };
+    }
+    return updatedDoc;
+  }
+
+  // File fallback
   const collection = await readCollectionAsync(collectionName);
   const index = collection.findIndex(item => item.id === id);
   if (index === -1) return null;
@@ -206,6 +323,18 @@ export const updateRecordAsync = async (collectionName, id, updates) => {
 };
 
 export const deleteRecordAsync = async (collectionName, id) => {
+  const db = await getMongoDb();
+  if (db) {
+    const result = await db.collection(collectionName).deleteOne({ id });
+    const cached = memoryCache.get(collectionName);
+    if (cached) {
+      const index = cached.findIndex(item => item.id === id);
+      if (index !== -1) cached.splice(index, 1);
+    }
+    return result.deletedCount > 0;
+  }
+
+  // File fallback
   const collection = await readCollectionAsync(collectionName);
   const index = collection.findIndex(item => item.id === id);
   if (index === -1) return false;
