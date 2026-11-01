@@ -1,4 +1,4 @@
-# Hostel Mess Foot-Traffic Optimization & Food Waste Reduction Analytics
+# Hostel Mess Food-Traffic Optimization & Food Waste Reduction Analytics
 
 A full-stack web application designed for Hostel Mess management, featuring live foot-traffic optimization, food waste tracking, menu polls, feedback management, and user check-ins.
 
