@@ -10,14 +10,24 @@ const app = express();
 // Security HTTP Headers (Helmet)
 app.use(helmet());
 
-// CORS Configuration
+// CORS Configuration with full Vercel & custom domain support
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow non-browser agents or matching client origins
-    if (!origin || env.CLIENT_ORIGIN.includes(origin)) {
+    // Allow non-browser agents, server probes, or health checks with no origin
+    if (!origin) return callback(null, true);
+
+    // Allow configured origins or wildcard
+    if (env.CLIENT_ORIGIN.includes('*') || env.CLIENT_ORIGIN.includes(origin)) {
       return callback(null, true);
     }
-    return callback(new Error('CORS policy restriction: Origin not allowed.'));
+
+    // Allow Vercel preview/production domains if vercel.app is permitted
+    const allowsVercel = env.CLIENT_ORIGIN.some(o => o.includes('vercel.app'));
+    if (allowsVercel && (origin.endsWith('.vercel.app') || origin.includes('vercel.app'))) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`CORS policy restriction: Origin ${origin} not allowed.`));
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
