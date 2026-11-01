@@ -7,7 +7,9 @@ import bcrypt from 'bcryptjs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const DATA_DIR = path.join(__dirname, '..', '..', 'data');
+// Render mounts persistent storage at /var/data. Keep local development data
+// beside the backend unless DATA_DIR is explicitly configured.
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, '..', '..', 'data');
 
 // Initial seed data generator
 const SEED_DATA = {

@@ -1,10 +1,10 @@
 import { secureStorage } from '@/utils/secureStorage';
 
-const BASE_URL = import.meta.env?.VITE_API_BASE_URL || 'http://localhost:5000/api';
+export const API_BASE_URL = (import.meta.env?.VITE_API_BASE_URL || 'http://localhost:5000/api').replace(/\/$/, '');
 
 // Generic Fetch API wrapper with Automatic JWT Authorization Header injection
 export async function fetchJson(endpoint, options = {}) {
-  const url = `${BASE_URL}${endpoint}`;
+  const url = `${API_BASE_URL}${endpoint}`;
   const token = secureStorage.getItem('token');
 
   const headers = {

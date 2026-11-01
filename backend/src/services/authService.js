@@ -2,8 +2,9 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { OAuth2Client } from 'google-auth-library';
 import { userRepository } from '../repositories/userRepository.js';
+import { env } from '../config/env.js';
 
-const getJwtSecret = () => process.env.JWT_SECRET || 'bit_mess_optimization_secure_jwt_secret_key_2026_super_secret';
+const getJwtSecret = () => env.JWT_SECRET;
 const getJwtExpiresIn = () => process.env.JWT_EXPIRES_IN || '7d';
 
 const isBitsathyEmail = (emailOrRoll) => {

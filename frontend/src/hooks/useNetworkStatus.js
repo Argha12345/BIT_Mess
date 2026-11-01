@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { API_BASE_URL } from '../api/client';
 
 export function useNetworkStatus() {
   const [isOnline, setIsOnline] = useState(() => {
@@ -66,7 +67,7 @@ export function useNetworkStatus() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 4000);
       
-      const res = await fetch('http://localhost:5000/api/analytics/live?section=Boys', { 
+      const res = await fetch(`${API_BASE_URL}/analytics/live?section=Boys`, {
         method: 'GET',
         signal: controller.signal 
       }).catch(() => null);

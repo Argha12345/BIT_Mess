@@ -42,6 +42,10 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   const isDev = env.NODE_ENV === 'development';

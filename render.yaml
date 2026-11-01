@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: bit-mess-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    # Persistent disks require a paid Render web service plan.
+    plan: starter
+    region: singapore   # closest to India; change to frankfurt/ohio if preferred
+    healthCheckPath: /health
+    disk:
+      name: bit-mess-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data
+      - key: JWT_SECRET
+        generateValue: true   # Render auto-generates a secure random string
+      - key: CLIENT_ORIGIN
+        sync: false           # Set this manually in the Render dashboard (your frontend URL)
