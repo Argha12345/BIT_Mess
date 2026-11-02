@@ -10,8 +10,14 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, '..', '..', 'data');
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017';
-const DB_NAME = process.env.MONGODB_DB_NAME || 'bit_mess';
+
+const cleanUri = (raw) => {
+  if (!raw) return 'mongodb://127.0.0.1:27017';
+  return raw.replace(/^MONGODB_URI=\s*/i, '').trim().replace(/^["']|["']$/g, '');
+};
+
+const MONGODB_URI = cleanUri(process.env.MONGODB_URI);
+const DB_NAME = (process.env.MONGODB_DB_NAME || 'bit_mess').trim();
 
 const COLLECTIONS = [
   'users',
@@ -67,4 +73,3 @@ async function seed() {
 }
 
 seed();
-

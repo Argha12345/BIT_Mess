@@ -18,7 +18,7 @@ let mongoDb = null;
 let connectionAttempted = false;
 
 export async function getMongoDb() {
-  const uri = process.env.MONGODB_URI;
+  let uri = (process.env.MONGODB_URI || '').replace(/^MONGODB_URI=\s*/i, '').trim();
   if (!uri) return null;
   if (mongoDb) return mongoDb;
   if (connectionAttempted && !mongoClient) return null;
