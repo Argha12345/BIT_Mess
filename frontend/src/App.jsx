@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Sidebar, Header, OfflineScreen } from '@/components/common';
 import { useNetworkStatus } from '@/hooks';
 import { api } from '@/api';
@@ -22,7 +22,13 @@ const PageLoader = () => (
 export default function App() {
   const [user, setUser] = useState(() => {
     try {
-      return secureStorage.getItem('user');
+      const storedUser = secureStorage.getItem('user');
+      const storedToken = secureStorage.getItem('token') || (typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null);
+      if (storedUser && !storedToken) {
+        secureStorage.removeItem('user');
+        return null;
+      }
+      return storedUser;
     } catch {
       return null;
     }
@@ -35,6 +41,17 @@ export default function App() {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const networkStatus = useNetworkStatus();
+
+  // Listen for unauthorized/expired session events and smoothly reset state
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      setUser(null);
+      changeActivePage('dashboard');
+      setShowLoginModal(true);
+    };
+    window.addEventListener('auth:unauthorized', handleUnauthorized);
+    return () => window.removeEventListener('auth:unauthorized', handleUnauthorized);
+  }, []);
 
   const updateUser = (userData) => {
     setUser(userData);

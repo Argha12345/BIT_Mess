@@ -1,8 +1,6 @@
-// Obfuscated / Encrypted Local Storage Utility for Client-Side Security
-
+// Resilient Local Storage Utility with Dual-Key Fallback & Safe Decoding
 const SECRET_SALT = 'BIT_MESS_SECURE_STORAGE_SALT_2026';
 
-// Base64 + Shift Obfuscation to prevent plain text inspection in DevTools
 const encode = (data) => {
   try {
     const jsonString = typeof data === 'string' ? data : JSON.stringify(data);
@@ -39,37 +37,63 @@ const KEY_MAP = {
 
 export const secureStorage = {
   setItem: (key, value) => {
-    const targetKey = KEY_MAP[key] || key;
-    const encodedValue = encode(value);
-    if (encodedValue !== null) {
-      localStorage.setItem(targetKey, encodedValue);
+    if (value === undefined || value === null) {
+      secureStorage.removeItem(key);
+      return;
+    }
+    try {
+      const targetKey = KEY_MAP[key] || key;
+      const encodedValue = encode(value);
+      if (encodedValue !== null) {
+        localStorage.setItem(targetKey, encodedValue);
+      }
+      // Dual-write standard key as safety fallback
+      if (typeof value === 'string') {
+        localStorage.setItem(key, value);
+      } else {
+        localStorage.setItem(key, JSON.stringify(value));
+      }
+    } catch (e) {
+      console.warn('secureStorage setItem warning:', e);
     }
   },
 
   getItem: (key) => {
-    const targetKey = KEY_MAP[key] || key;
-    const rawVal = localStorage.getItem(targetKey);
-    if (!rawVal) {
-      // Fallback check for legacy non-encoded key if present, then migrate
-      const legacyVal = localStorage.getItem(key);
-      if (legacyVal) {
-        secureStorage.setItem(key, legacyVal);
-        localStorage.removeItem(key);
-        try { return JSON.parse(legacyVal); } catch { return legacyVal; }
+    try {
+      const targetKey = KEY_MAP[key] || key;
+      const rawVal = localStorage.getItem(targetKey);
+      if (rawVal) {
+        const decoded = decode(rawVal);
+        if (decoded !== null && decoded !== undefined) return decoded;
+      }
+
+      // Fallback to standard key if obfuscated value is missing or decoding fails
+      const plainVal = localStorage.getItem(key);
+      if (plainVal) {
+        try {
+          return JSON.parse(plainVal);
+        } catch {
+          return plainVal;
+        }
       }
       return null;
+    } catch (e) {
+      return null;
     }
-    return decode(rawVal);
   },
 
   removeItem: (key) => {
-    const targetKey = KEY_MAP[key] || key;
-    localStorage.removeItem(targetKey);
-    localStorage.removeItem(key); // also clear un-encoded legacy key if exists
+    try {
+      const targetKey = KEY_MAP[key] || key;
+      localStorage.removeItem(targetKey);
+      localStorage.removeItem(key);
+    } catch (e) {}
   },
 
   clear: () => {
-    localStorage.clear();
+    try {
+      localStorage.clear();
+    } catch (e) {}
   }
 };
 

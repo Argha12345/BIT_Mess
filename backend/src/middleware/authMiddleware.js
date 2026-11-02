@@ -5,7 +5,15 @@ const getJwtSecret = () => env.JWT_SECRET;
 
 export const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'] || req.headers['Authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!authHeader) {
+    return res.status(401).json({ error: 'Access denied. Authentication token is missing.' });
+  }
+
+  // Handle both "Bearer <token>" and raw "<token>"
+  const token = authHeader.toLowerCase().startsWith('bearer ')
+    ? authHeader.slice(7).trim()
+    : authHeader.trim();
 
   if (!token) {
     return res.status(401).json({ error: 'Access denied. Authentication token is missing.' });

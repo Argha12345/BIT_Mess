@@ -24,6 +24,9 @@ export function useAuth({ setUser, setActivePage, onClose }) {
 
     try {
       const res = await api.auth.login(rollNo, password);
+      if (res.token) {
+        secureStorage.setItem('token', res.token);
+      }
       setAuthSuccess('Welcome back! Logging you in...');
       const targetPage = res.user.role === 'admin' ? 'admin-panel' : 'student-portal';
       secureStorage.setItem('user', res.user);
@@ -45,6 +48,9 @@ export function useAuth({ setUser, setActivePage, onClose }) {
     setIsLoading(true);
     try {
       const res = await api.auth.googleLogin(googleIdToken);
+      if (res.token) {
+        secureStorage.setItem('token', res.token);
+      }
       setAuthSuccess(`Welcome, ${res.user.name}! Sign-In successful...`);
       const targetPage = res.user.role === 'admin' ? 'admin-panel' : 'student-portal';
       secureStorage.setItem('user', res.user);
